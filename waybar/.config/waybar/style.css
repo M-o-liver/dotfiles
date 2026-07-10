@@ -1,0 +1,29 @@
+* {
+    font-family: "Adwaita Mono", monospace;
+    font-size: 14px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(20, 20, 25, 0.9);
+    color: #e0e0e0;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #a0a0a0;
+}
+
+#workspaces button.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#clock,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#tray {
+    padding: 0 10px;
+}
