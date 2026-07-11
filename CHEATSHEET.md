@@ -9,7 +9,7 @@ Mod key = **Super** (Windows key)
 | `Super + R` | App launcher (wofi) |
 | `Super + E` | File manager (Nautilus, GUI) |
 | `Super + Shift + E` | File manager (yazi, terminal) |
-| `Super + L` | Lock screen (hyprlock) |
+| `Super + Shift + L` | Lock screen (hyprlock) |
 
 ## Windows
 | Key | Action |
