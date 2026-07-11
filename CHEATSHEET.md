@@ -7,7 +7,8 @@ Mod key = **Super** (Windows key)
 |---|---|
 | `Super + Q` | Open terminal (Ghostty) |
 | `Super + R` | App launcher (wofi) |
-| `Super + E` | File manager (Nautilus) |
+| `Super + E` | File manager (Nautilus, GUI) |
+| `Super + Shift + E` | File manager (yazi, terminal) |
 | `Super + L` | Lock screen (hyprlock) |
 
 ## Windows
@@ -41,6 +42,17 @@ Mod key = **Super** (Windows key)
 | Key | Action |
 |---|---|
 | `Super + M` | Exit Hyprland, back to GDM |
+
+## Terminal apps
+| Command | Action |
+|---|---|
+| `y` | yazi (in any terminal) — `cd`s to wherever you exited |
+| `yazi` | yazi without the cd-on-exit behavior |
+
+## Other apps (via `Super + R`)
+- **qutebrowser** — keyboard-driven browser
+- **Prism Launcher** — Minecraft (Flatpak); use `dgpu-run flatpak run org.prismlauncher.PrismLauncher` to force NVIDIA dGPU
+- **Papers** — PDF viewer
 
 ## GPU offload
 Run any app on the NVIDIA dGPU instead of the AMD iGPU (Hyprland always
