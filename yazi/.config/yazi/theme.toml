@@ -1,0 +1,15 @@
+[mgr]
+marker_selected = { fg = "#4ade80", bold = true }
+marker_copied = { fg = "#f9c96b", bold = true }
+marker_cut = { fg = "#f38ba8", bold = true }
+border_style = { fg = "#a78bfa" }
+
+[status]
+perm_type = { fg = "#4ade80" }
+perm_read = { fg = "#f9c96b" }
+perm_write = { fg = "#f38ba8" }
+perm_exec = { fg = "#a78bfa", bold = true }
+
+[input]
+border = { fg = "#a78bfa" }
+selected = { fg = "#1a1625", bg = "#4ade80" }

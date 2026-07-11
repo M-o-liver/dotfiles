@@ -17,4 +17,14 @@ alias la='ls -lha'
 alias grep='grep --color=auto'
 alias dgpu='dgpu-run'
 
+# yazi: cd to wherever you were browsing when you quit
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 eval "$(starship init zsh)"
