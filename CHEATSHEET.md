@@ -109,6 +109,12 @@ fields, `Esc` always returns to normal mode.
 | `Ctrl+Shift+P` | Private browsing window |
 | `ZZ` | Quit qutebrowser |
 
+No extensions support (qutebrowser isn't a full Chromium shell, no
+WebExtensions API) — but real ad blocking is built in via Brave's
+adblock-rust engine using actual EasyList/EasyPrivacy filter lists, the same
+lists uBlock Origin uses. Run `:adblock-update` once (and after that,
+whenever you want fresh lists) to fetch them.
+
 ## GPU offload
 Run any app on the NVIDIA dGPU instead of the AMD iGPU (Hyprland always
 runs on AMD, since it drives the panel):
