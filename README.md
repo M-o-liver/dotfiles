@@ -18,6 +18,15 @@ stow -D hyprland   # unstow / remove symlinks for one package
 ~/dotfiles/scripts/.local/bin/install-nerd-font   # after stow scripts, or run directly
 ```
 
+## Cheat-sheet PDF
+
+`CHEATSHEET.md` is the source of truth; `CHEATSHEET.pdf` (built via pandoc +
+LaTeX, so Papers/any PDF viewer can read it) is regenerated automatically by
+a pre-commit hook whenever `CHEATSHEET.md` changes -- `git config
+core.hooksPath .githooks` wires that up (already set locally in this repo).
+To rebuild by hand: `make` (needs `pandoc-cli` +
+`texlive-collection-latexrecommended` + `texlive-mdwtools`).
+
 Fonts aren't committed to git (JetBrainsMono Nerd Font is ~220MB) — the
 script above pulls it from the upstream nerd-fonts GitHub release into
 `~/.local/share/fonts`.

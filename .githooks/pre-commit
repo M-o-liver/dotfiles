@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if git diff --cached --name-only | grep -q '^CHEATSHEET\.md$'; then
+    make -C "$(git rev-parse --show-toplevel)" >/dev/null
+    git add CHEATSHEET.pdf
+fi
