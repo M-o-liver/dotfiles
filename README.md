@@ -58,6 +58,17 @@ Hyprland borders, Waybar, Ghostty, wofi, hyprlock.
   Font files are NOT stow-managed (too big for git) — if you ever delete
   `~/dotfiles/fonts` or similar, check `find ~/.local/share/fonts -xtype l`
   for dangling symlinks first.
+- **Waybar battery always says "Not charging" while plugged in**: not a
+  rice bug. The kernel's own `/sys/class/power_supply/BAT1/status` reports
+  this (verify with `cat /sys/class/power_supply/BAT1/status` and
+  `current_now`, both wrong even outside Hyprland/Waybar) — it's the stock
+  `msi_wmi_platform` driver not fully decoding this MSI EC's charging
+  state. The community `msi-ec` DKMS driver (COPR: `xabi08/MSI-EC`) fixes
+  this on supported models, but this laptop's exact model (Crosshair A18 HX
+  A8WGKG) wasn't confirmed on msi-ec's supported-device list as of
+  2026-07-10, and it writes directly to EC registers, so we deliberately
+  skipped installing it. Revisit if a supported-devices update covers this
+  model.
 
 ## Machine notes
 
