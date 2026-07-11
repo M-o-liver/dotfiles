@@ -100,6 +100,11 @@ fields, `Esc` always returns to normal mode.
 | `1`-`9` `gt` after (e.g. `3gt`) | Jump to tab N |
 | `r` | Reload page |
 | `H` / `L` | Back / forward |
+| `Ctrl+T` | Open new tab (explicit binding, same as `o`) |
+| `Ctrl+W` | Close tab (explicit binding, same as `d`) |
+| `Ctrl+Shift+T` | Reopen last closed tab (explicit binding, same as `u`) |
+| `Ctrl+Tab` / `Ctrl+Shift+Tab` | Next / previous tab (explicit binding) |
+| `Alt+Left` / `Alt+Right` | Back / forward (explicit binding, same as `H`/`L`) |
 | `yy` | Yank current URL to clipboard |
 | `pp` | Open clipboard content as URL |
 | `/` | Search in page, `n`/`N` next/previous match |

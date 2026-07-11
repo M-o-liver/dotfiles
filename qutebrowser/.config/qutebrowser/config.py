@@ -15,3 +15,13 @@ config.bind('m', 'spawn --detach mpv {url}')
 
 # Same, but for a hinted link instead of the current page.
 config.bind('M', 'hint links spawn --detach mpv {hint-url}')
+
+# Explicit tab controls: familiar Ctrl-based bindings alongside the vim-style
+# defaults (t/T open, d close, u reopen, J/K or gt/gT switch, H/L back/forward)
+config.bind('<Ctrl-t>', 'open -t')
+config.bind('<Ctrl-w>', 'tab-close')
+config.bind('<Ctrl-Shift-t>', 'undo')
+config.bind('<Ctrl-Tab>', 'tab-next')
+config.bind('<Ctrl-Shift-Tab>', 'tab-prev')
+config.bind('<Alt-Left>', 'back')
+config.bind('<Alt-Right>', 'forward')
