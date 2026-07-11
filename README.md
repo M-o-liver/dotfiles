@@ -53,6 +53,11 @@ Hyprland borders, Waybar, Ghostty, wofi, hyprlock.
   to bring the CRTC back and required a hard restart to recover.
 - **Config errors on screen**: run `hyprctl configerrors` to see the exact
   file/line, rather than guessing from the banner text.
+- **Tofu boxes / Ghostty crashes immediately on launch**: the Nerd Font is
+  missing or broken. Re-run `~/dotfiles/scripts/.local/bin/install-nerd-font`.
+  Font files are NOT stow-managed (too big for git) — if you ever delete
+  `~/dotfiles/fonts` or similar, check `find ~/.local/share/fonts -xtype l`
+  for dangling symlinks first.
 
 ## Machine notes
 
