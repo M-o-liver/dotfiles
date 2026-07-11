@@ -6,7 +6,7 @@
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["network", "pulseaudio", "cpu", "memory", "tray"],
+    "modules-right": ["battery", "network", "pulseaudio", "cpu", "memory", "tray"],
 
     "hyprland/workspaces": {
         "format": "{name}",
@@ -25,6 +25,17 @@
         "tooltip-format": "{ifname} via {gwaddr}",
         "tooltip-format-wifi": "{essid} ({signalStrength}%)",
         "on-click": "nm-connection-editor"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 20,
+            "critical": 10
+        },
+        "format": "Bat {capacity}%",
+        "format-charging": "Bat {capacity}% (chg)",
+        "format-full": "Bat Full",
+        "tooltip-format": "{timeTo}"
     },
 
     "pulseaudio": {

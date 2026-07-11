@@ -42,6 +42,18 @@ Dark, purple/green accent. Palette: bg `#1a1625`, surface `#211d2e`,
 fg `#e0def4`, muted `#6b6382`, purple `#a78bfa`, green `#4ade80`. Applied to
 Hyprland borders, Waybar, Ghostty, wofi, hyprlock.
 
+## Troubleshooting
+
+- **Cropped/shifted screen edge**: almost always a fractional monitor scale.
+  Logical resolution (physical / scale) must come out to a whole number —
+  see the comment on the `monitor =` line in `hyprland/.config/hypr/hyprland.conf`.
+  Fix by editing the scale value and logging out/in (or `hyprctl reload` if
+  only non-monitor lines changed). Do NOT try to fix this by toggling
+  `hyprctl keyword monitor eDP-1,disable` live — on this machine that failed
+  to bring the CRTC back and required a hard restart to recover.
+- **Config errors on screen**: run `hyprctl configerrors` to see the exact
+  file/line, rather than guessing from the banner text.
+
 ## Machine notes
 
 - Fedora 44, Btrfs root, hybrid GPU: AMD Raphael (iGPU, drives the internal

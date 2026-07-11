@@ -33,6 +33,7 @@ window#waybar {
     padding: 0 12px;
 }
 
+#battery,
 #network,
 #pulseaudio,
 #cpu,
@@ -43,5 +44,13 @@ window#waybar {
 }
 
 #network.disconnected {
+    color: #f38ba8;
+}
+
+#battery.warning {
+    color: #f9c96b;
+}
+
+#battery.critical {
     color: #f38ba8;
 }
