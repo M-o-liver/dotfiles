@@ -1,29 +1,47 @@
 * {
-    font-family: "Adwaita Mono", monospace;
+    font-family: "JetBrainsMono Nerd Font";
     font-size: 14px;
     min-height: 0;
 }
 
 window#waybar {
-    background: rgba(20, 20, 25, 0.9);
-    color: #e0e0e0;
+    background: #1a1625;
+    color: #e0def4;
+    border-bottom: 2px solid #a78bfa;
 }
 
 #workspaces button {
-    padding: 0 8px;
-    color: #a0a0a0;
+    padding: 0 10px;
+    color: #6b6382;
 }
 
 #workspaces button.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.1);
+    color: #1a1625;
+    background: #a78bfa;
+    border-radius: 6px;
 }
 
-#clock,
+#workspaces button:hover {
+    color: #1a1625;
+    background: #4ade80;
+    border-radius: 6px;
+}
+
+#clock {
+    color: #4ade80;
+    font-weight: bold;
+    padding: 0 12px;
+}
+
 #network,
 #pulseaudio,
 #cpu,
 #memory,
 #tray {
     padding: 0 10px;
+    color: #e0def4;
+}
+
+#network.disconnected {
+    color: #f38ba8;
 }

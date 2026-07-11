@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Installs JetBrainsMono Nerd Font into ~/.local/share/fonts (user-local, no sudo).
+set -euo pipefail
+
+VERSION="v3.4.0"
+URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${VERSION}/JetBrainsMono.tar.xz"
+DEST="$HOME/.local/share/fonts"
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
+
+echo "Downloading JetBrainsMono Nerd Font ${VERSION}..."
+curl -sL -o "$TMP/JetBrainsMono.tar.xz" "$URL"
+mkdir -p "$DEST"
+tar -xf "$TMP/JetBrainsMono.tar.xz" -C "$TMP"
+cp "$TMP"/*.ttf "$DEST/"
+fc-cache -f "$DEST"
+echo "Installed to $DEST"

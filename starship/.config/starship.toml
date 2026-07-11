@@ -1,0 +1,30 @@
+format = """
+[](fg:#a78bfa)[  $directory](bg:#a78bfa fg:#1a1625)[](fg:#a78bfa bg:#4ade80)[ $git_branch$git_status ](bg:#4ade80 fg:#1a1625)[](fg:#4ade80)$character"""
+
+[directory]
+truncation_length = 3
+style = "bg:#a78bfa fg:#1a1625"
+
+[git_branch]
+symbol = " "
+style = "bg:#4ade80 fg:#1a1625"
+
+[git_status]
+style = "bg:#4ade80 fg:#1a1625"
+
+[character]
+success_symbol = "[❯](bold #4ade80)"
+error_symbol = "[❯](bold #f38ba8)"
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration](#f9c96b) "
+
+[nodejs]
+symbol = " "
+
+[python]
+symbol = " "
+
+[rust]
+symbol = " "
