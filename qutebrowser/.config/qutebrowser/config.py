@@ -1,5 +1,11 @@
 config.load_autoconfig()
 
+# Real EasyList/EasyPrivacy ad+tracker blocking (Brave's adblock-rust engine,
+# via the 'adblock' pip package) instead of the cruder hosts-file fallback.
+# Run :adblock-update once to fetch the lists (content.blocking.adblock.lists
+# already defaults to EasyList + EasyPrivacy).
+config.set('content.blocking.method', 'both')
+
 # Google rejects sign-in from qutebrowser's default UA ("unsupported browser")
 config.set('content.headers.user_agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0', 'https://accounts.google.com/*')
 
