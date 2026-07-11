@@ -54,6 +54,61 @@ Mod key = **Super** (Windows key)
 - **Prism Launcher** — Minecraft (Flatpak); use `dgpu-run flatpak run org.prismlauncher.PrismLauncher` to force NVIDIA dGPU
 - **Papers** — PDF viewer
 
+## yazi keybinds
+| Key | Action |
+|---|---|
+| `j` / `k` or arrows | Move down / up |
+| `h` / `l` or arrows | Parent dir / enter dir |
+| `H` / `L` | Back / forward in history |
+| `gg` / `G` | Top / bottom |
+| `gh` | Go home (`~`) |
+| `gc` | Go to `~/.config` |
+| `gd` | Go to `~/Downloads` |
+| `<Space>` | Toggle selection on current file |
+| `v` / `V` | Visual select mode / visual unset mode |
+| `Ctrl+a` / `Ctrl+r` | Select all / invert selection |
+| `y` / `x` / `p` / `P` | Yank (copy) / cut / paste / paste (overwrite) |
+| `d` / `D` | Trash / permanently delete |
+| `a` | Create file (end with `/` for a directory) |
+| `r` | Rename |
+| `o` / `Enter` | Open |
+| `O` / `Shift+Enter` | Open interactively (pick app) |
+| `.` | Toggle hidden files |
+| `/` / `?` | Find next / previous |
+| `s` / `S` | Search by name (fd) / by content (ripgrep) |
+| `f` | Filter files |
+| `tt` | New tab in current dir |
+| `1`-`9` | Switch to tab N |
+| `[` / `]` | Previous / next tab |
+| `,` then `m`/`a`/`s`/`e`/`n` | Sort by mtime / alphabetical / size / extension / natural (Shift = reverse) |
+| `w` | Task manager |
+| `~` or `F1` | Help (full keymap, searchable) |
+| `q` | Quit |
+
+## qutebrowser
+Vim-style modal browser — `i` enters insert mode for typing into page
+fields, `Esc` always returns to normal mode.
+
+| Key | Action |
+|---|---|
+| `o` / `O` | Open URL (same tab / new tab) |
+| `f` | Hint mode: click a link by typed label |
+| `F` | Hint mode: open link in new tab |
+| `d` / `Shift+D` | Close tab / close tab without losing focus |
+| `u` | Reopen last closed tab |
+| `J` / `K` or `gt` / `gT` | Next / previous tab |
+| `1`-`9` `gt` after (e.g. `3gt`) | Jump to tab N |
+| `r` | Reload page |
+| `H` / `L` | Back / forward |
+| `yy` | Yank current URL to clipboard |
+| `pp` | Open clipboard content as URL |
+| `/` | Search in page, `n`/`N` next/previous match |
+| `m` | **Play current page's video in mpv** (via yt-dlp — smoother than embedded playback) |
+| `M` | Hint a link, play it in mpv |
+| `:` | Command mode (e.g. `:set`, `:bind`, `:open`) |
+| `Ctrl+Shift+P` | Private browsing window |
+| `ZZ` | Quit qutebrowser |
+
 ## GPU offload
 Run any app on the NVIDIA dGPU instead of the AMD iGPU (Hyprland always
 runs on AMD, since it drives the panel):
