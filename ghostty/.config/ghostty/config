@@ -1,5 +1,6 @@
 font-family = JetBrainsMono Nerd Font
 font-size = 13
+command = zsh
 
 background = 1a1625
 foreground = e0def4
