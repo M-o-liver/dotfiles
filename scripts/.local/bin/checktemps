@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Print a summary table of CPU/GPU/NVMe/RAM/WiFi temps for this laptop
+# (Crosshair A18 HX: Ryzen 9 8940HX + RTX 5070 + Radeon 610M).
+set -euo pipefail
+
+j="$(sensors -j)"
+
+get() { jq -r "$1 // \"n/a\"" <<<"$j"; }
+
+tctl=$(get '.["k10temp-pci-00c3"].Tctl.temp1_input')
+tccd1=$(get '.["k10temp-pci-00c3"].Tccd1.temp3_input')
+tccd2=$(get '.["k10temp-pci-00c3"].Tccd2.temp4_input')
+igpu=$(get '.["amdgpu-pci-0700"].edge.temp1_input')
+ram1=$(get '.["spd5118-i2c-9-50"].temp1.temp1_input')
+ram2=$(get '.["spd5118-i2c-9-51"].temp1.temp1_input')
+wifi=$(get '.["mt7921_phy0-pci-0600"].temp1.temp1_input')
+nvme1=$(get '.["nvme-pci-0300"].Composite.temp1_input')
+nvme2=$(get '.["nvme-pci-0400"].Composite.temp1_input')
+
+dgpu="n/a"
+if command -v nvidia-smi >/dev/null 2>&1; then
+    dgpu="$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader 2>/dev/null || echo n/a)"
+fi
+
+fmt() { [ "$1" = "n/a" ] && echo "n/a" || printf '%.1f°C' "$1"; }
+
+printf '%-14s %-11s %s\n' "Component" "Sensor" "Temp"
+printf '%-14s %-11s %s\n' "--------------" "-----------" "----------------"
+printf '%-14s %-11s %s\n' "CPU (Tctl)"     "k10temp"    "$(fmt "$tctl")"
+printf '%-14s %-11s %s\n' "CPU CCD1"       "k10temp"    "$(fmt "$tccd1")"
+printf '%-14s %-11s %s\n' "CPU CCD2"       "k10temp"    "$(fmt "$tccd2")"
+printf '%-14s %-11s %s\n' "iGPU (610M)"    "amdgpu"     "$(fmt "$igpu")"
+printf '%-14s %-11s %s\n' "dGPU (RTX5070)" "nvidia-smi" "${dgpu}°C"
+printf '%-14s %-11s %s\n' "NVMe 1"         "nvme"       "$(fmt "$nvme1")"
+printf '%-14s %-11s %s\n' "NVMe 2"         "nvme"       "$(fmt "$nvme2")"
+printf '%-14s %-11s %s\n' "RAM stick 1"    "spd5118"    "$(fmt "$ram1")"
+printf '%-14s %-11s %s\n' "RAM stick 2"    "spd5118"    "$(fmt "$ram2")"
+printf '%-14s %-11s %s\n' "WiFi"           "mt7921"     "$(fmt "$wifi")"
