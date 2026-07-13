@@ -6,7 +6,7 @@
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["battery", "network", "pulseaudio", "cpu", "memory", "tray"],
+    "modules-right": ["battery", "network", "bluetooth", "pulseaudio", "cpu", "memory", "tray"],
 
     "hyprland/workspaces": {
         "format": "{name}",
@@ -36,6 +36,16 @@
         "format-charging": "Bat {capacity}% (chg)",
         "format-full": "Bat Full",
         "tooltip-format": "{timeTo}"
+    },
+
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager"
     },
 
     "pulseaudio": {
