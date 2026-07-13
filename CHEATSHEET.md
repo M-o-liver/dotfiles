@@ -50,7 +50,7 @@ Mod key = **Super** (Windows key)
 | `yazi` | yazi without the cd-on-exit behavior |
 
 ## Other apps (via `Super + R`)
-- **qutebrowser** — keyboard-driven browser
+- **Google Chrome** — web browser
 - **Prism Launcher** — Minecraft (Flatpak); use `dgpu-run flatpak run org.prismlauncher.PrismLauncher` to force NVIDIA dGPU
 - **Papers** — PDF viewer
 
@@ -84,41 +84,6 @@ Mod key = **Super** (Windows key)
 | `w` | Task manager |
 | `~` or `F1` | Help (full keymap, searchable) |
 | `q` | Quit |
-
-## qutebrowser
-Vim-style modal browser — `i` enters insert mode for typing into page
-fields, `Esc` always returns to normal mode.
-
-| Key | Action |
-|---|---|
-| `o` / `O` | Open URL (same tab / new tab) |
-| `f` | Hint mode: click a link by typed label |
-| `F` | Hint mode: open link in new tab |
-| `d` / `Shift+D` | Close tab / close tab without losing focus |
-| `u` | Reopen last closed tab |
-| `J` / `K` or `gt` / `gT` | Next / previous tab |
-| `1`-`9` `gt` after (e.g. `3gt`) | Jump to tab N |
-| `r` | Reload page |
-| `H` / `L` | Back / forward |
-| `Ctrl+T` | Open new tab (explicit binding, same as `o`) |
-| `Ctrl+W` | Close tab (explicit binding, same as `d`) |
-| `Ctrl+Shift+T` | Reopen last closed tab (explicit binding, same as `u`) |
-| `Ctrl+Tab` / `Ctrl+Shift+Tab` | Next / previous tab (explicit binding) |
-| `Alt+Left` / `Alt+Right` | Back / forward (explicit binding, same as `H`/`L`) |
-| `yy` | Yank current URL to clipboard |
-| `pp` | Open clipboard content as URL |
-| `/` | Search in page, `n`/`N` next/previous match |
-| `m` | **Play current page's video in mpv** (via yt-dlp — smoother than embedded playback) |
-| `M` | Hint a link, play it in mpv |
-| `:` | Command mode (e.g. `:set`, `:bind`, `:open`) |
-| `Ctrl+Shift+P` | Private browsing window |
-| `ZZ` | Quit qutebrowser |
-
-No extensions support (qutebrowser isn't a full Chromium shell, no
-WebExtensions API) — but real ad blocking is built in via Brave's
-adblock-rust engine using actual EasyList/EasyPrivacy filter lists, the same
-lists uBlock Origin uses. Run `:adblock-update` once (and after that,
-whenever you want fresh lists) to fetch them.
 
 ## GPU offload
 Run any app on the NVIDIA dGPU instead of the AMD iGPU (Hyprland always
