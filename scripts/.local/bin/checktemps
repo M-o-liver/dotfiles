@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Print a summary table of CPU/GPU/NVMe/RAM/WiFi temps for this laptop
-# (Crosshair A18 HX: Ryzen 9 8940HX + RTX 5070 + Radeon 610M).
+# Riced temp summary for CPU/GPU/NVMe/RAM/WiFi, styled to match the
+# starship prompt palette (~/.config/starship.toml): purple label pills,
+# green/amber/red status pills, powerline arrows.
 set -euo pipefail
 
 j="$(sensors -j)"
-
 get() { jq -r "$1 // \"n/a\"" <<<"$j"; }
 
 tctl=$(get '.["k10temp-pci-00c3"].Tctl.temp1_input')
@@ -19,20 +19,63 @@ nvme2=$(get '.["nvme-pci-0400"].Composite.temp1_input')
 
 dgpu="n/a"
 if command -v nvidia-smi >/dev/null 2>&1; then
-    dgpu="$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader 2>/dev/null || echo n/a)"
+    dgpu="$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null || echo n/a)"
 fi
 
-fmt() { [ "$1" = "n/a" ] && echo "n/a" || printf '%.1f°C' "$1"; }
+# starship.toml palette
+PURPLE="167;139;250"
+DARK="26;22;37"
+GREEN="74;222;128"
+AMBER="249;201;107"
+RED="243;139;168"
+ARROW=$''
+ICON=$'' # fa-microchip
 
-printf '%-14s %-11s %s\n' "Component" "Sensor" "Temp"
-printf '%-14s %-11s %s\n' "--------------" "-----------" "----------------"
-printf '%-14s %-11s %s\n' "CPU (Tctl)"     "k10temp"    "$(fmt "$tctl")"
-printf '%-14s %-11s %s\n' "CPU CCD1"       "k10temp"    "$(fmt "$tccd1")"
-printf '%-14s %-11s %s\n' "CPU CCD2"       "k10temp"    "$(fmt "$tccd2")"
-printf '%-14s %-11s %s\n' "iGPU (610M)"    "amdgpu"     "$(fmt "$igpu")"
-printf '%-14s %-11s %s\n' "dGPU (RTX5070)" "nvidia-smi" "${dgpu}°C"
-printf '%-14s %-11s %s\n' "NVMe 1"         "nvme"       "$(fmt "$nvme1")"
-printf '%-14s %-11s %s\n' "NVMe 2"         "nvme"       "$(fmt "$nvme2")"
-printf '%-14s %-11s %s\n' "RAM stick 1"    "spd5118"    "$(fmt "$ram1")"
-printf '%-14s %-11s %s\n' "RAM stick 2"    "spd5118"    "$(fmt "$ram2")"
-printf '%-14s %-11s %s\n' "WiFi"           "mt7921"     "$(fmt "$wifi")"
+fg() { printf '\033[38;2;%sm' "$1"; }
+bg() { printf '\033[48;2;%sm' "$1"; }
+reset() { printf '\033[0m'; }
+
+# warn/crit thresholds per component
+status_color() {
+    local val=$1 warn=$2 crit=$3
+    [ "$val" = "n/a" ] && { echo "$AMBER"; return; }
+    awk -v v="$val" -v w="$warn" -v c="$crit" \
+        'BEGIN{ if (v>=c) print "red"; else if (v>=w) print "amber"; else print "green"; exit }' \
+        | { read -r r; case "$r" in
+              red) echo "$RED" ;;
+              amber) echo "$AMBER" ;;
+              *) echo "$GREEN" ;;
+          esac; }
+}
+
+fmt() { [ "$1" = "n/a" ] && echo " n/a " || printf ' %.1f°C ' "$1"; }
+
+row() {
+    local label="$1" val="$2" warn="$3" crit="$4"
+    local vcolor
+    vcolor=$(status_color "$val" "$warn" "$crit")
+
+    bg "$PURPLE"; fg "$DARK"
+    printf ' %s %s ' "$ICON" "$label"
+    reset; fg "$PURPLE"; bg "$vcolor"
+    printf '%s' "$ARROW"
+    reset; fg "$DARK"; bg "$vcolor"
+    printf '%s' "$(fmt "$val")"
+    reset; fg "$vcolor"
+    printf '%s' "$ARROW"
+    reset
+    printf '\n'
+}
+
+echo
+row "CPU (Tctl)"    "$tctl"  70 90
+row "CPU CCD1"      "$tccd1" 70 90
+row "CPU CCD2"      "$tccd2" 70 90
+row "iGPU (610M)"   "$igpu"  75 90
+row "dGPU (RTX5070)" "$dgpu" 75 85
+row "NVMe 1"        "$nvme1" 60 75
+row "NVMe 2"        "$nvme2" 60 75
+row "RAM stick 1"   "$ram1"  50 55
+row "RAM stick 2"   "$ram2"  50 55
+row "WiFi"          "$wifi"  70 85
+echo
