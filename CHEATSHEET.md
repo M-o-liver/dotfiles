@@ -10,6 +10,7 @@ Mod key = **Super** (Windows key)
 | `Super + E` | File manager (Nautilus, GUI) |
 | `Super + Shift + E` | File manager (yazi, terminal) |
 | `Super + Shift + L` | Lock screen (hyprlock) |
+| `Super + O` | Toggle Ollama scratchpad (wide ghostty, `qwen2.5-coder:7b`) — hides, doesn't kill |
 
 ## Windows
 | Key | Action |
