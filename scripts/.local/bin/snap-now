@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+desc="${1:-manual snapshot}"
+
+sudo snapper create --description "agent: ${desc}"
+mkdir -p ~/.cache
+touch ~/.cache/agent-snapshot-stamp
+
+echo "Snapshot created: agent: ${desc}"
