@@ -7,8 +7,12 @@ is a stow "package" mirroring `~/.config` (or `~/.local`) layout.
 
 ```
 cd ~/dotfiles
+mkdir -p ~/.claude/commands   # first time only, if ~/.claude doesn't exist yet
 stow hyprland waybar foot ghostty starship fastfetch wofi \
     hyprpaper hypridle hyprlock wallpaper zsh scripts
+stow --no-folding claude   # REQUIRED: plain `stow claude` would fold ~/.claude
+                            # into the repo, dragging Claude Code's own runtime
+                            # state (history, sessions, cache) in with it.
 stow -D hyprland   # unstow / remove symlinks for one package
 ```
 
@@ -100,3 +104,28 @@ Hyprland borders, Waybar, Ghostty, wofi, hyprlock.
 - GNOME/GDM kept as fallback session — do not remove.
 - Pre-change Btrfs snapshot taken via snapper (`root` config) before any
   system package changes.
+
+## Conversational layer
+
+This repo doubles as the machine's agent-aware administrative root, for
+Claude Code sessions:
+
+- `MACHINE.md` is the machine brain — system identity, package provenance,
+  quirks, and safety rules. `CLAUDE.md` (repo root) holds repo-specific
+  hygiene and imports `MACHINE.md`.
+- The `claude/` package version-controls Claude Code's own configuration:
+  `claude/.claude/settings.json` (permissions, hook wiring), a global
+  `claude/.claude/CLAUDE.md` pointer (imports `~/dotfiles/MACHINE.md`, so
+  every session on this machine loads the same machine context regardless
+  of which directory it's opened in), and `claude/.claude/commands/`
+  (`/sync`, `/verify`).
+- The snapshot policy is enforced, not just requested: a PreToolUse hook
+  (`agent-snapshot-guard`) blocks system-changing Bash commands unless a
+  recent `snap-now` snapshot exists.
+- Recovery is two-tier: snapper for system state (`snapper rollback`), git
+  for userland config in this repo. Neither substitutes for the other.
+
+`stow --no-folding claude` is required when deploying the `claude` package
+(see Usage above) — plain `stow` would fold `~/.claude` into the repo and
+pull Claude Code's runtime state (session history, cache) into version
+control with it.
