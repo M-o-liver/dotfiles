@@ -46,6 +46,7 @@ hyprlang `.conf` syntax — working but deprecated. Consequences:
 
 - **Never paste config from older guides/examples unverified:** `windowrulev2`, `dwindle:pseudotile`, and `gestures:workspace_swipe` no longer work as of 0.55. See git log for their replacements.
 - On config errors, run `hyprctl configerrors` for exact file/line — don't guess from the on-screen banner.
+- The classic `fullscreenstate` windowrule is gone in 0.55's legacy syntax; the effect is now `fullscreen <internal> client:<state>` (e.g. `fullscreen 0 client:2` for fake-fullscreen-in-a-tile). It applies at window creation only — for already-open windows, focus them and run `hyprctl dispatch fullscreenstate 0 2`.
 - A future Lua migration is a known, deliberate project — do not do it opportunistically as a side effect of another task.
 
 ## Known Quirks & Decision Log

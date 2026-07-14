@@ -23,6 +23,7 @@ Mod key = **Super** (Windows key)
 | `Super + H/J/K/L` or arrows | Move focus between windows |
 | `Super + drag` (left click) | Move window |
 | `Super + drag` (right click) | Resize window |
+| Video fullscreen in Chrome (e.g. YouTube `f`) | Fills the tile, not the monitor (window rule) |
 
 ## Workspaces
 | Key | Action |
