@@ -115,7 +115,9 @@ dgpu-run flatpak run org.prismlauncher.PrismLauncher
 - **Session hung**: `loginctl terminate-user cross` from a TTY force-kills
   it and drops GDM back to the login screen.
 - **Just want GNOME back**: `Super + M` from inside Hyprland, or pick
-  "GNOME" instead of "Hyprland" at the GDM session picker.
+  "GNOME" instead of "Hyprland" at the GDM session picker. GNOME is
+  Nord-themed with a bottom taskbar (dash-to-panel); if it ever looks
+  stock or broken after an upgrade, re-run `gnome-nord`.
 - **Config errors on screen**: `hyprctl configerrors` gives the exact
   file/line instead of guessing from the on-screen banner.
 - **Cropped/shifted screen**: see Troubleshooting in README.md — almost

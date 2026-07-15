@@ -1,0 +1,73 @@
+/* Nord palette for libadwaita (GTK4) apps — matches Hyprland theme (MACHINE.md).
+   GNOME 47+ uses CSS variables; @define-color kept for apps still reading the
+   legacy named colors. Keep both in sync. */
+
+:root {
+  --window-bg-color: #2e3440;
+  --window-fg-color: #eceff4;
+  --view-bg-color: #2e3440;
+  --view-fg-color: #eceff4;
+  --headerbar-bg-color: #3b4252;
+  --headerbar-fg-color: #eceff4;
+  --headerbar-backdrop-color: #2e3440;
+  --sidebar-bg-color: #3b4252;
+  --sidebar-fg-color: #eceff4;
+  --sidebar-backdrop-color: #2e3440;
+  --secondary-sidebar-bg-color: #353c4a;
+  --secondary-sidebar-fg-color: #eceff4;
+  --card-bg-color: #3b4252;
+  --card-fg-color: #eceff4;
+  --dialog-bg-color: #3b4252;
+  --dialog-fg-color: #eceff4;
+  --popover-bg-color: #3b4252;
+  --popover-fg-color: #eceff4;
+
+  --accent-bg-color: #88c0d0;
+  --accent-fg-color: #2e3440;
+  --accent-color: #88c0d0;
+
+  --destructive-bg-color: #bf616a;
+  --destructive-fg-color: #eceff4;
+  --destructive-color: #bf616a;
+  --warning-bg-color: #ebcb8b;
+  --warning-fg-color: #2e3440;
+  --warning-color: #ebcb8b;
+  --error-bg-color: #bf616a;
+  --error-fg-color: #eceff4;
+  --error-color: #bf616a;
+  --success-bg-color: #a3be8c;
+  --success-fg-color: #2e3440;
+  --success-color: #a3be8c;
+}
+
+@define-color window_bg_color #2e3440;
+@define-color window_fg_color #eceff4;
+@define-color view_bg_color #2e3440;
+@define-color view_fg_color #eceff4;
+@define-color headerbar_bg_color #3b4252;
+@define-color headerbar_fg_color #eceff4;
+@define-color headerbar_backdrop_color #2e3440;
+@define-color sidebar_bg_color #3b4252;
+@define-color sidebar_fg_color #eceff4;
+@define-color sidebar_backdrop_color #2e3440;
+@define-color card_bg_color #3b4252;
+@define-color card_fg_color #eceff4;
+@define-color dialog_bg_color #3b4252;
+@define-color dialog_fg_color #eceff4;
+@define-color popover_bg_color #3b4252;
+@define-color popover_fg_color #eceff4;
+@define-color accent_bg_color #88c0d0;
+@define-color accent_fg_color #2e3440;
+@define-color accent_color #88c0d0;
+@define-color destructive_bg_color #bf616a;
+@define-color destructive_fg_color #eceff4;
+@define-color destructive_color #bf616a;
+@define-color warning_bg_color #ebcb8b;
+@define-color warning_fg_color #2e3440;
+@define-color warning_color #ebcb8b;
+@define-color error_bg_color #bf616a;
+@define-color error_fg_color #eceff4;
+@define-color error_color #bf616a;
+@define-color success_bg_color #a3be8c;
+@define-color success_fg_color #2e3440;
+@define-color success_color #a3be8c;

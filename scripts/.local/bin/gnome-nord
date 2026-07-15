@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# gnome-nord — apply the Nord theme + sleek bottom-panel layout to GNOME.
+# Idempotent; safe to re-run after Fedora/GNOME upgrades or on a fresh stow.
+# dconf is a binary database, so this script IS the committed source of truth
+# for GNOME appearance settings. gtk.css color overrides live in the gtk
+# stow package; extension packages come from Fedora repos (see MACHINE.md).
+set -euo pipefail
+
+WALLPAPER="file://$HOME/.local/share/backgrounds/dotfiles-wallpaper.png"
+
+echo "== interface =="
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+gsettings set org.gnome.desktop.interface accent-color 'teal'   # closest builtin to frost cyan #88c0d0
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 11'
+gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
+gsettings set org.gnome.desktop.interface enable-hot-corners false
+
+echo "== wallpaper =="
+gsettings set org.gnome.desktop.background picture-uri "$WALLPAPER"
+gsettings set org.gnome.desktop.background picture-uri-dark "$WALLPAPER"
+gsettings set org.gnome.desktop.background picture-options 'zoom'
+gsettings set org.gnome.desktop.screensaver picture-uri "$WALLPAPER"
+
+echo "== extensions =="
+# Enabling only flips a dconf key; takes effect at next GNOME login.
+gnome-extensions enable dash-to-panel@jderose9.github.com 2>/dev/null \
+  || echo "  dash-to-panel not installed yet (dnf install gnome-shell-extension-dash-to-panel)"
+
+echo "== dash-to-panel (sleek bottom bar, Nord) =="
+D2P=/org/gnome/shell/extensions/dash-to-panel
+dconf write $D2P/panel-positions '"{\"0\":\"BOTTOM\"}"'
+dconf write $D2P/panel-sizes '"{\"0\":40}"'
+dconf write $D2P/appicon-margin 4
+dconf write $D2P/appicon-padding 4
+dconf write $D2P/dot-style-focused "'METRO'"
+dconf write $D2P/dot-style-unfocused "'DOTS'"
+dconf write $D2P/dot-color-override true
+dconf write $D2P/dot-color-1 "'#88c0d0'"
+dconf write $D2P/trans-use-custom-bg true
+dconf write $D2P/trans-bg-color "'#2e3440'"
+dconf write $D2P/trans-use-custom-opacity true
+dconf write $D2P/trans-panel-opacity 0.95
+dconf write $D2P/show-apps-icon-side-padding 8
+dconf write $D2P/animate-appicon-hover true
+dconf write $D2P/isolate-workspaces false
+dconf write $D2P/hide-overview-on-startup true
+
+echo "done — log into GNOME (or Alt+F2 r under Xorg) to see it."
