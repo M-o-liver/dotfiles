@@ -1,24 +1,24 @@
 format = """
-[](fg:#a78bfa)[  $directory](bg:#a78bfa fg:#1a1625)[](fg:#a78bfa bg:#4ade80)[ $git_branch$git_status ](bg:#4ade80 fg:#1a1625)[](fg:#4ade80)$character"""
+[](fg:#88c0d0)[  $directory](bg:#88c0d0 fg:#2e3440)[](fg:#88c0d0 bg:#81a1c1)[ $git_branch$git_status ](bg:#81a1c1 fg:#2e3440)[](fg:#81a1c1)$character"""
 
 [directory]
 truncation_length = 3
-style = "bg:#a78bfa fg:#1a1625"
+style = "bg:#88c0d0 fg:#2e3440"
 
 [git_branch]
 symbol = " "
-style = "bg:#4ade80 fg:#1a1625"
+style = "bg:#81a1c1 fg:#2e3440"
 
 [git_status]
-style = "bg:#4ade80 fg:#1a1625"
+style = "bg:#81a1c1 fg:#2e3440"
 
 [character]
-success_symbol = "[❯](bold #4ade80)"
-error_symbol = "[❯](bold #f38ba8)"
+success_symbol = "[❯](bold #a3be8c)"
+error_symbol = "[❯](bold #bf616a)"
 
 [cmd_duration]
 min_time = 2000
-format = "took [$duration](#f9c96b) "
+format = "took [$duration](#ebcb8b) "
 
 [nodejs]
 symbol = " "

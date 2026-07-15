@@ -94,4 +94,4 @@ cat /sys/class/power_supply/BAT1/status         # before trusting any battery re
 ## Environment Map
 
 Launcher: wofi · Bar: waybar · File manager: yazi (terminal) · Shell: zsh + starship
-Idle/lock/wallpaper: hypridle / hyprlock / hyprpaper · Wallpaper: generated gradient, palette bg `#1a1625` / purple `#a78bfa` / green `#4ade80` — new theming work should match this palette unless told otherwise.
+Idle/lock/wallpaper: hypridle / hyprlock / hyprpaper · Wallpaper: generated gradient (Nord). Theme is **Nord** (since 2026-07-15): bg `#2e3440` / bg-alt `#3b4252` / fg `#eceff4` / muted `#4c566a` / primary accent frost cyan `#88c0d0` / secondary frost blue `#81a1c1` / semantic aurora red `#bf616a`, yellow `#ebcb8b`, green `#a3be8c` — new theming work should match this palette unless told otherwise.

@@ -1,15 +1,15 @@
 window {
-    background-color: #1a1625;
-    color: #e0def4;
+    background-color: #2e3440;
+    color: #eceff4;
     font-family: "JetBrainsMono Nerd Font";
     font-size: 14px;
-    border: 2px solid #a78bfa;
+    border: 2px solid #88c0d0;
     border-radius: 10px;
 }
 
 #input {
-    background-color: #211d2e;
-    color: #e0def4;
+    background-color: #3b4252;
+    color: #eceff4;
     border: none;
     border-radius: 6px;
     margin: 8px;
@@ -22,10 +22,10 @@ window {
 }
 
 #entry:selected {
-    background-color: #a78bfa;
-    color: #1a1625;
+    background-color: #88c0d0;
+    color: #2e3440;
 }
 
 #text:selected {
-    color: #1a1625;
+    color: #2e3440;
 }

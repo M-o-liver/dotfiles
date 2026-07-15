@@ -1,15 +1,15 @@
 [mgr]
-marker_selected = { fg = "#4ade80", bold = true }
-marker_copied = { fg = "#f9c96b", bold = true }
-marker_cut = { fg = "#f38ba8", bold = true }
-border_style = { fg = "#a78bfa" }
+marker_selected = { fg = "#a3be8c", bold = true }
+marker_copied = { fg = "#ebcb8b", bold = true }
+marker_cut = { fg = "#bf616a", bold = true }
+border_style = { fg = "#88c0d0" }
 
 [status]
-perm_type = { fg = "#4ade80" }
-perm_read = { fg = "#f9c96b" }
-perm_write = { fg = "#f38ba8" }
-perm_exec = { fg = "#a78bfa", bold = true }
+perm_type = { fg = "#a3be8c" }
+perm_read = { fg = "#ebcb8b" }
+perm_write = { fg = "#bf616a" }
+perm_exec = { fg = "#88c0d0", bold = true }
 
 [input]
-border = { fg = "#a78bfa" }
-selected = { fg = "#1a1625", bg = "#4ade80" }
+border = { fg = "#88c0d0" }
+selected = { fg = "#2e3440", bg = "#88c0d0" }

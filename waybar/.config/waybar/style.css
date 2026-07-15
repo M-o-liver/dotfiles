@@ -5,30 +5,30 @@
 }
 
 window#waybar {
-    background: #1a1625;
-    color: #e0def4;
-    border-bottom: 2px solid #a78bfa;
+    background: #2e3440;
+    color: #eceff4;
+    border-bottom: 2px solid #88c0d0;
 }
 
 #workspaces button {
     padding: 0 10px;
-    color: #6b6382;
+    color: #4c566a;
 }
 
 #workspaces button.active {
-    color: #1a1625;
-    background: #a78bfa;
+    color: #2e3440;
+    background: #88c0d0;
     border-radius: 6px;
 }
 
 #workspaces button:hover {
-    color: #1a1625;
-    background: #4ade80;
+    color: #2e3440;
+    background: #81a1c1;
     border-radius: 6px;
 }
 
 #clock {
-    color: #4ade80;
+    color: #88c0d0;
     font-weight: bold;
     padding: 0 12px;
 }
@@ -41,26 +41,26 @@ window#waybar {
 #memory,
 #tray {
     padding: 0 10px;
-    color: #e0def4;
+    color: #eceff4;
 }
 
 #network.disconnected {
-    color: #f38ba8;
+    color: #bf616a;
 }
 
 #bluetooth.connected {
-    color: #4ade80;
+    color: #a3be8c;
 }
 
 #bluetooth.off,
 #bluetooth.disabled {
-    color: #6b6382;
+    color: #4c566a;
 }
 
 #battery.warning {
-    color: #f9c96b;
+    color: #ebcb8b;
 }
 
 #battery.critical {
-    color: #f38ba8;
+    color: #bf616a;
 }
