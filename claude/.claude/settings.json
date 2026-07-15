@@ -1,8 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-sonnet-5",
-  "effortLevel": "medium",
-  "theme": "dark",
   "permissions": {
     "allow": [
       "Read",
@@ -29,10 +26,6 @@
       "Bash(stow *)",
       "Bash(snap-now*)"
     ],
-    "ask": [
-      "Bash(sudo *)",
-      "Bash(git push*)"
-    ],
     "deny": [
       "Read(~/.ssh/**)",
       "Read(~/.gnupg/**)",
@@ -43,8 +36,13 @@
       "Bash(parted*)",
       "Bash(sfdisk*)",
       "Bash(wipefs*)"
+    ],
+    "ask": [
+      "Bash(sudo *)",
+      "Bash(git push*)"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -57,5 +55,7 @@
         ]
       }
     ]
-  }
+  },
+  "effortLevel": "medium",
+  "theme": "dark"
 }
