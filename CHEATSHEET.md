@@ -7,6 +7,7 @@ Mod key = **Super** (Windows key)
 |---|---|
 | `Super + Q` | Open terminal (Ghostty) |
 | `Super + R` | App launcher (wofi) |
+| Click `` (bar, bottom-left) | App launcher (wofi) — same as `Super + R` |
 | `Super + E` | File manager (Nautilus, GUI) |
 | `Super + Shift + E` | File manager (yazi, terminal) |
 | `Super + Shift + L` | Lock screen (hyprlock) |
@@ -39,6 +40,16 @@ Mod key = **Super** (Windows key)
 | Volume up/down/mute keys | Adjust/mute volume (wpctl) |
 | Brightness up/down keys | Adjust screen brightness |
 | Play/next/prev media keys | playerctl control |
+
+## Bar (waybar — bottom of screen)
+| Element | Click action |
+|---|---|
+| `` home button | App launcher (wofi) |
+| Workspace numbers | Switch workspace |
+| Network | nm-connection-editor |
+| Bluetooth | blueman-manager |
+| Volume | Toggle mute |
+| CPU / Mem | btop |
 
 ## Session
 | Key | Action |

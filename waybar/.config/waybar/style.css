@@ -4,10 +4,30 @@
     min-height: 0;
 }
 
+/* Transparent window; the "islands" below carry the glass background.
+   Actual frosting comes from `layerrule = blur, waybar` in hyprland.conf. */
 window#waybar {
-    background: #2e3440;
+    background: transparent;
     color: #eceff4;
-    border-bottom: 2px solid #88c0d0;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+    background: rgba(46, 52, 64, 0.85);
+    border: 1px solid rgba(136, 192, 208, 0.35);
+    border-radius: 12px;
+    padding: 0 6px;
+}
+
+#custom-launcher {
+    color: #88c0d0;
+    font-size: 18px;
+    padding: 0 12px 0 10px;
+}
+
+#custom-launcher:hover {
+    color: #8fbcbb;
 }
 
 #workspaces button {
@@ -18,13 +38,13 @@ window#waybar {
 #workspaces button.active {
     color: #2e3440;
     background: #88c0d0;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 #workspaces button:hover {
     color: #2e3440;
     background: #81a1c1;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 #clock {

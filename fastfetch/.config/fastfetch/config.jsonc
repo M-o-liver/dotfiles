@@ -3,14 +3,14 @@
     "logo": {
         "type": "auto",
         "color": {
-            "1": "magenta",
-            "2": "green"
+            "1": "cyan",
+            "2": "blue"
         }
     },
     "display": {
         "separator": "  ",
         "color": {
-            "keys": "magenta"
+            "keys": "cyan"
         }
     },
     "modules": [

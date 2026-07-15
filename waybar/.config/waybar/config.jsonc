@@ -1,12 +1,21 @@
 {
     "layer": "top",
-    "position": "top",
-    "height": 34,
-    "spacing": 4,
+    "position": "bottom",
+    "height": 36,
+    "spacing": 8,
+    "margin-bottom": 6,
+    "margin-left": 8,
+    "margin-right": 8,
 
-    "modules-left": ["hyprland/workspaces"],
+    "modules-left": ["custom/launcher", "hyprland/workspaces"],
     "modules-center": ["clock"],
     "modules-right": ["battery", "network", "bluetooth", "pulseaudio", "cpu", "memory", "tray"],
+
+    "custom/launcher": {
+        "format": "",
+        "on-click": "wofi --show drun",
+        "tooltip": false
+    },
 
     "hyprland/workspaces": {
         "format": "{name}",
