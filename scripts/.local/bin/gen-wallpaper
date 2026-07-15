@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""Generate the Nord landscape wallpaper (2560x1600, eDP panel native).
+
+Layered vector-style scene: night-sky gradient, stars, frost moon, faint
+aurora ribbons, and midpoint-displacement mountain ridges — all in the
+machine palette (see MACHINE.md). Deterministic via fixed seed; output is
+committed at wallpaper/.local/share/backgrounds/dotfiles-wallpaper.png.
+"""
+import math
+import random
+from pathlib import Path
+
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
+
+W, H = 2560, 1600
+SEED = 44  # Fedora 44
+OUT = Path.home() / "dotfiles/wallpaper/.local/share/backgrounds/dotfiles-wallpaper.png"
+
+
+def hex2rgb(h):
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def lerp(a, b, t):
+    return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
+
+
+def ridge_heights(rng, base, amp, roughness=0.55, points=9):
+    """1D midpoint displacement, returns W heights (fraction of H)."""
+    xs = [i / (points - 1) for i in range(points)]
+    ys = [base + rng.uniform(-amp, amp) for _ in xs]
+    while len(xs) < 513:
+        nxs, nys = [], []
+        amp *= roughness
+        for i in range(len(xs) - 1):
+            nxs += [xs[i], (xs[i] + xs[i + 1]) / 2]
+            nys += [ys[i], (ys[i] + ys[i + 1]) / 2 + rng.uniform(-amp, amp)]
+        nxs.append(xs[-1])
+        nys.append(ys[-1])
+        xs, ys = nxs, nys
+    # linear interpolation to pixel columns keeps silhouettes crisp, not noisy
+    heights = []
+    for x in range(W):
+        f = x / (W - 1) * (len(ys) - 1)
+        i = min(int(f), len(ys) - 2)
+        heights.append(ys[i] + (ys[i + 1] - ys[i]) * (f - i))
+    k = 7  # light moving-average smoothing
+    return [sum(heights[max(0, x - k):x + k + 1]) / len(heights[max(0, x - k):x + k + 1]) for x in range(W)]
+
+
+def main():
+    rng = random.Random(SEED)
+
+    # --- Sky gradient: near-black zenith to hazy horizon ---
+    top, mid, hor = hex2rgb("242933"), hex2rgb("2e3440"), hex2rgb("3b4252")
+    img = Image.new("RGB", (W, H))
+    d = ImageDraw.Draw(img)
+    horizon = 0.62
+    for y in range(H):
+        t = y / (H - 1)
+        c = lerp(top, mid, t / horizon) if t < horizon else lerp(mid, hor, (t - horizon) / (1 - horizon))
+        d.line([(0, y), (W, y)], fill=c)
+
+    # --- Aurora ribbons (drawn on a blurred overlay) ---
+    aur = Image.new("RGB", (W, H), (0, 0, 0))
+    ad = ImageDraw.Draw(aur)
+    for color, y0, amp, thick, phase, gain in (
+        (hex2rgb("a3be8c"), 0.14, 0.05, 55, 0.0, 0.75),
+        (hex2rgb("88c0d0"), 0.27, 0.05, 45, 2.1, 0.55),
+        (hex2rgb("8fbcbb"), 0.37, 0.04, 30, 4.4, 0.35),
+    ):
+        for x in range(0, W, 4):
+            fx = x / W
+            y = (y0 + amp * math.sin(fx * 5.5 + phase) + 0.02 * math.sin(fx * 13 + phase * 3)) * H
+            fade = math.sin(fx * math.pi) ** 0.7  # fade at screen edges
+            c = tuple(int(v * gain * fade) for v in color)
+            ad.line([(x, y - thick), (x, y + thick)], fill=c, width=5)
+    aur = aur.filter(ImageFilter.GaussianBlur(38))
+    img = ImageChops.add(img, aur)
+
+    d = ImageDraw.Draw(img)
+
+    # --- Stars: denser and brighter near the zenith ---
+    for _ in range(420):
+        x, y = rng.uniform(0, W), rng.uniform(0, H * horizon)
+        if rng.random() > (1 - y / (H * horizon)) ** 0.5:
+            continue
+        b = rng.randint(120, 235)
+        r = rng.choice((1, 1, 1, 2))
+        d.ellipse([x - r / 2, y - r / 2, x + r / 2, y + r / 2], fill=(b, b, min(255, b + 12)))
+
+    # --- Frost moon with soft glow ---
+    mx, my, mr = W * 0.78, H * 0.20, 46
+    glow = Image.new("RGB", (W, H), (0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    gd.ellipse([mx - mr * 3, my - mr * 3, mx + mr * 3, my + mr * 3], fill=(60, 84, 92))
+    glow = glow.filter(ImageFilter.GaussianBlur(70))
+    img = ImageChops.add(img, glow)
+    d = ImageDraw.Draw(img)
+    d.ellipse([mx - mr, my - mr, mx + mr, my + mr], fill=hex2rgb("d8dee9"))
+    d.ellipse([mx - mr * 0.55, my - mr * 0.75, mx + mr * 1.05, my + mr * 0.85],
+              fill=lerp(hex2rgb("d8dee9"), hex2rgb("e5e9f0"), 0.5))
+
+    # --- Mountain ridges, back (light, hazy) to front (darkest) ---
+    ridges = (
+        (0.58, 0.10, hex2rgb("4c566a")),
+        (0.66, 0.09, hex2rgb("434c5e")),
+        (0.76, 0.08, hex2rgb("3b4252")),
+        (0.88, 0.06, hex2rgb("2e3440")),
+    )
+    for base, amp, color in ridges:
+        hs = ridge_heights(rng, base, amp)
+        poly = [(x, hs[x] * H) for x in range(W)] + [(W - 1, H), (0, H)]
+        d.polygon(poly, fill=color)
+
+    img.save(OUT)
+    print(f"saved {OUT}")
+
+
+if __name__ == "__main__":
+    main()
