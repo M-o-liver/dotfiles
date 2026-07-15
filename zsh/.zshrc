@@ -1,4 +1,5 @@
 export PATH="$HOME/.local/bin:$PATH"
+export NPM_CONFIG_PREFIX="$HOME/.local"
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
