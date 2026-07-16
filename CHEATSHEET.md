@@ -51,6 +51,18 @@ Mod key = **Super** (Windows key)
 | Volume | Toggle mute |
 | CPU / Mem | btop |
 
+## Desktop widgets
+Three floating windows are launched at startup and pinned in place (wallpaper
+owns the center of the screen):
+| Widget | Position | Contents |
+|---|---|---|
+| Music | top-left | `cmus` |
+| System info | top-right | `fastfetch` |
+| Ascii art | bottom-right | static art from `~/.config/hypr/ascii-art.txt` |
+
+Close/move like any floating window (`Super + C` / `Super + drag`) — they
+won't reappear positioned until the next Hyprland login.
+
 ## Session
 | Key | Action |
 |---|---|
