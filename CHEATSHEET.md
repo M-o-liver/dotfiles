@@ -16,7 +16,7 @@ Mod key = **Super** (Windows key)
 ## Windows
 | Key | Action |
 |---|---|
-| `Super + C` | Put away focused window (hides to special workspace, doesn't kill) |
+| `Super + C` | Put away focused window (hides it, doesn't kill) |
 | `Super + Shift + C` | Bring back the put-away window |
 | `Super + Shift + Q` | Close (kill) focused window |
 | `Super + V` | Toggle floating |
