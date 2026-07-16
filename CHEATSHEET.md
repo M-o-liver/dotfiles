@@ -16,9 +16,7 @@ Mod key = **Super** (Windows key)
 ## Windows
 | Key | Action |
 |---|---|
-| `Super + C` | Put away focused window (hides it, doesn't kill) |
-| `Super + Shift + C` | Bring back the put-away window |
-| `Super + Shift + Q` | Close (kill) focused window |
+| `Super + C` | Close focused window |
 | `Super + V` | Toggle floating |
 | `Super + F` | Toggle fullscreen |
 | `Super + P` | Toggle pseudotile |
@@ -62,8 +60,8 @@ owns the center of the screen):
 | System info | top-right | `fastfetch` |
 | Ascii art | bottom-right | static art from `~/.config/hypr/ascii-art.txt` |
 
-Close/move like any floating window (`Super + Shift + Q` to kill / `Super + drag`
-to move) — they won't reappear positioned until the next Hyprland login.
+Close/move like any floating window (`Super + C` / `Super + drag`) — they
+won't reappear positioned until the next Hyprland login.
 
 ## Session
 | Key | Action |
