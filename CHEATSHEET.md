@@ -119,6 +119,19 @@ dgpu-run <command>
 dgpu-run flatpak run org.prismlauncher.PrismLauncher
 ```
 
+## WiFi
+The waybar network applet shows status but can't switch networks. Use the
+`wifi` script instead — it lists what's in range, marking the connected
+network with a filled dot and saved ones with a hollow dot, and connects
+to your pick:
+```
+wifi              # interactive picker
+wifi "GC Public"  # connect straight to a named network
+```
+Saved networks reconnect without a prompt; new ones ask for a password.
+On a captive portal you'll associate but have no route out until you open
+any `http://` page and sign in.
+
 ## Recovery
 - **Hyprland won't start / crashes at login**: at GDM, switch to a TTY with
   `Ctrl+Alt+F3`, log in, run `journalctl --user -b -u wayland-wm@hyprland.service`

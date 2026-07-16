@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Interactive wifi picker. Lists networks in range, marks the active one and
+# any with a saved profile, then connects to your pick — reusing the saved
+# profile when there is one, prompting for a password when there isn't.
+# Nord palette to match the rest of the environment.
+#
+# Usage: wifi            # interactive picker
+#        wifi "GC Public" # connect straight to a named network
+set -euo pipefail
+
+CYAN=$'\033[38;2;136;192;208m'
+BLUE=$'\033[38;2;129;161;193m'
+GREEN=$'\033[38;2;163;190;140m'
+MUTED=$'\033[38;2;76;86;106m'
+RED=$'\033[38;2;191;97;106m'
+YELLOW=$'\033[38;2;235;203;139m'
+RESET=$'\033[0m'
+
+die() { printf '%s%s%s\n' "$RED" "$*" "$RESET" >&2; exit 1; }
+
+command -v nmcli >/dev/null || die "nmcli not found — is NetworkManager installed?"
+
+# Saved profile names, one per line.
+saved="$(nmcli -t -f NAME,TYPE connection show | awk -F: '$2=="802-11-wireless"{print $1}')"
+is_saved() { grep -qxF "$1" <<<"$saved"; }
+
+connect() {
+    local ssid="$1"
+    if is_saved "$ssid"; then
+        printf '%sConnecting to %s%s%s (saved profile)...%s\n' \
+            "$MUTED" "$CYAN" "$ssid" "$MUTED" "$RESET"
+        nmcli connection up "$ssid"
+    else
+        printf '%sNo saved profile for %s%s%s.%s\n' \
+            "$MUTED" "$CYAN" "$ssid" "$MUTED" "$RESET"
+        read -rsp "Password (empty for open network): " pw; echo
+        if [ -z "$pw" ]; then
+            nmcli device wifi connect "$ssid"
+        else
+            nmcli device wifi connect "$ssid" password "$pw"
+        fi
+    fi
+    printf '\n%sTip:%s if this is a captive portal, open any http:// page to sign in.\n' \
+        "$YELLOW" "$RESET"
+}
+
+# Direct mode: wifi "SSID"
+if [ $# -gt 0 ]; then
+    connect "$1"
+    exit
+fi
+
+printf '%sScanning...%s\n' "$MUTED" "$RESET"
+nmcli device wifi rescan >/dev/null 2>&1 || true
+
+mapfile -t rows < <(nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY device wifi list \
+    | awk -F: '$2 != "" && !seen[$2]++')
+
+[ "${#rows[@]}" -gt 0 ] || die "No networks found."
+
+echo
+for i in "${!rows[@]}"; do
+    IFS=: read -r inuse ssid signal security <<<"${rows[$i]}"
+    mark="  "; color="$RESET"
+    if [ "$inuse" = "*" ]; then
+        mark="${GREEN}●${RESET} "; color="$GREEN"
+    elif is_saved "$ssid"; then
+        mark="${BLUE}○${RESET} "; color="$BLUE"
+    fi
+    [ -z "$security" ] && security="open"
+    printf '%s%2d)%s %s%s%-28s%s %s%3s%%  %s%s\n' \
+        "$MUTED" "$((i + 1))" "$RESET" "$mark" "$color" "$ssid" "$RESET" \
+        "$MUTED" "$signal" "$security" "$RESET"
+done
+printf '\n%s● connected   ○ saved%s\n\n' "$MUTED" "$RESET"
+
+read -rp "Network number (blank to cancel): " pick || exit 0
+[ -n "$pick" ] || exit 0
+[[ "$pick" =~ ^[0-9]+$ ]] && [ "$pick" -ge 1 ] && [ "$pick" -le "${#rows[@]}" ] \
+    || die "Not a valid choice."
+
+IFS=: read -r _ ssid _ _ <<<"${rows[$((pick - 1))]}"
+connect "$ssid"
