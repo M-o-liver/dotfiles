@@ -1,0 +1,12 @@
+# Global context — applies to every Qwen Code session on this machine
+
+This machine's administrative root is ~/dotfiles (stow-managed). Machine
+identity, quirks, package provenance, and hard rules (snapshot before
+system changes, edit dotfiles in-repo not live paths, never touch Windows
+partitions, etc.) are documented here — read and follow them in full:
+
+@../dotfiles/MACHINE.md
+
+Repo-specific hygiene for editing ~/dotfiles itself:
+
+@../dotfiles/CLAUDE.md
