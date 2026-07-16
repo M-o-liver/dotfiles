@@ -56,7 +56,7 @@ Three floating windows are launched at startup and pinned in place (wallpaper
 owns the center of the screen):
 | Widget | Position | Contents |
 |---|---|---|
-| Music | top-left | `cmus` |
+| System monitor | left | `btop` |
 | System info | top-right | `fastfetch` |
 | Ascii art | bottom-right | static art from `~/.config/hypr/ascii-art.txt` |
 
