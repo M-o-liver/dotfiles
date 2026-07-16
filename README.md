@@ -10,9 +10,10 @@ cd ~/dotfiles
 mkdir -p ~/.claude/commands   # first time only, if ~/.claude doesn't exist yet
 stow hyprland waybar foot ghostty starship fastfetch wofi \
     hyprpaper hypridle hyprlock wallpaper zsh scripts
-stow --no-folding claude   # REQUIRED: plain `stow claude` would fold ~/.claude
-                            # into the repo, dragging Claude Code's own runtime
-                            # state (history, sessions, cache) in with it.
+stow --no-folding claude qwen goose   # REQUIRED: plain `stow` would fold
+                            # ~/.claude, ~/.qwen, ~/.config/goose into the
+                            # repo, dragging each tool's own runtime state
+                            # (history, sessions, cache) in with it.
 stow -D hyprland   # unstow / remove symlinks for one package
 ```
 
