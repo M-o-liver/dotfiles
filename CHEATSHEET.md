@@ -25,6 +25,7 @@ Mod key = **Super** (Windows key)
 | `Super + drag` (left click) | Move window |
 | `Super + drag` (right click) | Resize window |
 | Video fullscreen in Chrome (e.g. YouTube `f`) | Fills the tile, not the monitor (window rule) |
+| `Super + Tab` | Window switcher (wofi list of every open window, any workspace) — recovers lost/buried windows |
 
 ## Workspaces
 | Key | Action |
