@@ -6,7 +6,9 @@
       "Glob",
       "Grep",
       "Bash(journalctl *)",
-      "Bash(hyprctl *)",
+      "Bash(gnome-extensions list*)",
+      "Bash(gnome-extensions info*)",
+      "Bash(gsettings get*)",
       "Bash(lspci*)",
       "Bash(lsblk*)",
       "Bash(nvidia-smi*)",
@@ -56,6 +58,6 @@
       }
     ]
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "theme": "dark"
 }

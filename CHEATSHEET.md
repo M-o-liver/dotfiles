@@ -1,84 +1,50 @@
-# Hyprland keybinding cheat-sheet
+# GNOME desktop cheat-sheet
 
-Mod key = **Super** (Windows key)
+Windows-like GNOME setup: dash-to-panel taskbar (bottom), ArcMenu start
+menu, per-window Alt-Tab, edge snapping. All of it is applied by the
+`gnome-nord` script -- re-run it and re-login if anything looks stock.
 
-## Apps
+## Start menu & apps
 | Key | Action |
 |---|---|
-| `Super + Q` | Open terminal (Ghostty) |
-| `Super + R` | App launcher (wofi) |
-| Click `` (bar, bottom-left) | App launcher (wofi) — same as `Super + R` |
-| `Super + E` | File manager (Nautilus, GUI) |
-| `Super + Shift + E` | File manager (yazi, terminal) |
-| `Super + Shift + L` | Lock screen (hyprlock) |
-| `Super + O` | Toggle Ollama scratchpad (wide ghostty, `qwen2.5-coder:7b`) — hides, doesn't kill |
+| `Super` | Open start menu (ArcMenu, Windows layout) |
+| Type after `Super` | Search apps/files, Enter to launch |
+| `Alt + F2` | Run-command prompt (GNOME built-in) |
+| Taskbar icon click | Focus/launch app (pin via right-click) |
+
+There are no custom app-launch hotkeys anymore (the old `Super+Q` etc.
+went with Hyprland). Add any you miss in Settings > Keyboard > Custom
+Shortcuts.
 
 ## Windows
 | Key | Action |
 |---|---|
-| `Super + C` | Close focused window |
-| `Super + V` | Toggle floating |
-| `Super + F` | Toggle fullscreen |
-| `Super + P` | Toggle pseudotile |
-| `Super + J` | Toggle split direction |
-| `Super + H/J/K/L` or arrows | Move focus between windows |
-| `Super + drag` (left click) | Move window |
-| `Super + drag` (right click) | Resize window |
-| Video fullscreen in Chrome (e.g. YouTube `f`) | Fills the tile, not the monitor (window rule) |
-| `Super + Tab` | Window switcher (wofi list of every open window, any workspace) — recovers lost/buried windows |
+| `Alt + Tab` | Switch between windows (Windows-style, per window) |
+| `Super + Tab` | Switch between applications (grouped) |
+| `Super + Left/Right` | Snap window to half screen (or drag to edge) |
+| `Super + Up` | Maximize (or drag to top edge) |
+| `Super + Down` | Unmaximize / restore |
+| `Super + H` | Minimize ("hide") |
+| `Alt + F4` | Close window |
+| `F11` | Fullscreen (app-dependent) |
 
 ## Workspaces
 | Key | Action |
 |---|---|
-| `Super + 1..0` | Switch to workspace 1-10 |
-| `Super + Shift + 1..0` | Move focused window to workspace 1-10 |
-| `Super + scroll` | Cycle workspaces |
-| 3-finger touchpad swipe | Switch workspaces |
+| `Super + Page Up / Page Down` | Previous / next workspace |
+| `Super + Shift + Page Up / Page Down` | Move window to prev/next workspace |
+| 3-finger touchpad swipe up | Overview (all windows + workspaces) |
 
 ## Media / system
-| Key | Action |
-|---|---|
-| Volume up/down/mute keys | Adjust/mute volume (wpctl) |
-| Brightness up/down keys | Adjust screen brightness |
-| Play/next/prev media keys | playerctl control |
-
-## Bar (waybar — bottom of screen)
-| Element | Click action |
-|---|---|
-| `` home button | App launcher (wofi) |
-| Workspace numbers | Switch workspace |
-| Network | nm-connection-editor |
-| Bluetooth | blueman-manager |
-| Volume | Toggle mute |
-| CPU / Mem | btop |
-
-## Desktop widgets
-Three floating windows are launched at startup and pinned in place (wallpaper
-owns the center of the screen):
-| Widget | Position | Contents |
-|---|---|---|
-| System monitor | left | `btop` |
-| System info | top-right | `fastfetch` |
-| Ascii art | bottom-right | static art from `~/.config/hypr/ascii-art.txt` |
-
-Close/move like any floating window (`Super + C` / `Super + drag`) — they
-won't reappear positioned until the next Hyprland login.
-
-## Session
-| Key | Action |
-|---|---|
-| `Super + M` | Exit Hyprland, back to GDM |
+Volume, brightness, and media keys are handled natively by GNOME.
+System menu (network, bluetooth, battery, power off): top-right of the
+taskbar. Lock screen: `Super + L`.
 
 ## Terminal apps
 | Command | Action |
 |---|---|
-| `y` | yazi (in any terminal) — `cd`s to wherever you exited |
+| `y` | yazi (in any terminal) -- `cd`s to wherever you exited |
 | `yazi` | yazi without the cd-on-exit behavior |
-
-## Other apps (via `Super + R`)
-- **Google Chrome** — web browser
-- **Prism Launcher** — Minecraft (Flatpak); use `dgpu-run flatpak run org.prismlauncher.PrismLauncher` to force NVIDIA dGPU
-- **Papers** — PDF viewer
 
 ## yazi keybinds
 | Key | Action |
@@ -112,8 +78,8 @@ won't reappear positioned until the next Hyprland login.
 | `q` | Quit |
 
 ## GPU offload
-Run any app on the NVIDIA dGPU instead of the AMD iGPU (Hyprland always
-runs on AMD, since it drives the panel):
+Run any app on the NVIDIA dGPU instead of the AMD iGPU (GNOME always runs
+on AMD, since it drives the panel):
 ```
 dgpu-run <command>
 # e.g.
@@ -121,10 +87,8 @@ dgpu-run flatpak run org.prismlauncher.PrismLauncher
 ```
 
 ## WiFi
-The waybar network applet shows status but can't switch networks. Use the
-`wifi` script instead — it lists what's in range, marking the connected
-network with a filled dot and saved ones with a hollow dot, and connects
-to your pick:
+GNOME's system menu (top-right of the taskbar) lists and connects to
+networks. The `wifi` script still works from any terminal:
 ```
 wifi              # interactive picker
 wifi "GC Public"  # connect straight to a named network
@@ -134,17 +98,17 @@ On a captive portal you'll associate but have no route out until you open
 any `http://` page and sign in.
 
 ## Recovery
-- **Hyprland won't start / crashes at login**: at GDM, switch to a TTY with
-  `Ctrl+Alt+F3`, log in, run `journalctl --user -b -u wayland-wm@hyprland.service`
-  or check `~/.local/share/hyprland/` / `/run/user/$UID/hypr/*/hyprland.log`
-  for the actual error. `Ctrl+Alt+F1` (or F2) back to the graphical screen.
+- **GNOME session won't start / crashes at login**: at GDM, switch to a
+  TTY with `Ctrl+Alt+F3`, log in, check
+  `journalctl --user -b -u org.gnome.Shell@wayland.service` (or
+  `journalctl -b -p err`). `Ctrl+Alt+F1` (or F2) back to the graphical
+  screen.
 - **Session hung**: `loginctl terminate-user cross` from a TTY force-kills
-  it and drops GDM back to the login screen.
-- **Just want GNOME back**: `Super + M` from inside Hyprland, or pick
-  "GNOME" instead of "Hyprland" at the GDM session picker. GNOME is
-  Nord-themed with a bottom taskbar (dash-to-panel); if it ever looks
-  stock or broken after an upgrade, re-run `gnome-nord`.
-- **Config errors on screen**: `hyprctl configerrors` gives the exact
-  file/line instead of guessing from the on-screen banner.
-- **Cropped/shifted screen**: see Troubleshooting in README.md — almost
-  always a fractional monitor scale.
+  it and drops back to the GDM login screen.
+- **Theme/taskbar/start menu missing or stock-looking**: re-run
+  `gnome-nord`, then log out/in. If ArcMenu is gone entirely (e.g. after a
+  GNOME major upgrade breaks compatibility), reinstall the matching
+  version from extensions.gnome.org (`gnome-extensions install <zip>`).
+- **Desperate fallback**: pick "GNOME Classic" at the GDM session picker
+  (gear icon) -- ugly but always works. Normal logins should use plain
+  "GNOME"; Classic force-loads its own extensions and fights this setup.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run a command on the NVIDIA dGPU via PRIME render offload, leaving the
-# AMD iGPU (which drives the internal panel and the Hyprland compositor)
+# AMD iGPU (which drives the internal panel and the GNOME compositor)
 # untouched. Usage: dgpu-run minecraft-launcher
 exec env \
   __NV_PRIME_RENDER_OFFLOAD=1 \

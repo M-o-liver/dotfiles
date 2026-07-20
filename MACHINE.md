@@ -1,4 +1,4 @@
-# MACHINE.md — MSI Crosshair A18 HX A8WGKG / Fedora 44 / Hyprland
+# MACHINE.md — MSI Crosshair A18 HX A8WGKG / Fedora 44 / GNOME
 
 This repo (~/dotfiles) is the administrative root of this machine. You are
 operating on this specific system. These facts override your training data.
@@ -9,12 +9,12 @@ When uncertain, read the live system before answering — never guess.
 - **Chassis:** MSI Crosshair A18 HX A8WGKG (18" gaming laptop)
 - **CPU:** AMD Ryzen 9 HX (Zen 5). VAES-capable — LUKS overhead negligible; never suggest weakening encryption for performance.
 - **GPUs (hybrid — this topology is load-bearing):**
-  - AMD Raphael iGPU **owns the display** — it drives the internal eDP panel, and Hyprland always runs on it.
+  - AMD Raphael iGPU **owns the display** — it drives the internal eDP panel, and GNOME Shell (Mutter) always runs on it.
   - NVIDIA RTX 5070 Max-Q (Blackwell) is **PRIME offload only**, invoked via `dgpu-run` (in `scripts/.local/bin/`). Never propose making the dGPU own the session; dGPU-only MUX mode has caused display corruption on this machine before.
 - **eDP panel:** BOE NE180QDM-NZ4, 2560x1600@240Hz, scale 1.60.
 - **RAM:** 30GiB total.
 - **Storage:** `nvme0n1` — Samsung 990 EVO 1TB, LUKS2-encrypted Btrfs, holds `/boot/efi`, `/boot`, and the `fedora` btrfs volume (`/`, `/home`), snapper `root` config active. `nvme1n1` — Samsung MZVL81T0HELB 953.9GB, dedicated to the Windows 11 install (EFI `SYSTEM` partition, BitLocker-encrypted OS partition, WinRE, BIOS_RVY) — Windows lives on its own physical disk, not a shared-disk partition.
-- **Dual boot:** Windows 11 on `nvme1n1`, BitLocker-encrypted, GNOME/GDM kept as fallback session — **do not remove GNOME or GDM.** Never mount the Windows partition read-write; never touch Windows EFI entries; read-only via dislocker only if the user supplies the key, and prefer USB/network transfer over mounting at all.
+- **Dual boot:** Windows 11 on `nvme1n1`, BitLocker-encrypted. GNOME/GDM is the one and only desktop session (Hyprland removed 2026-07-19) — **do not remove GNOME or GDM.** Never mount the Windows partition read-write; never touch Windows EFI entries; read-only via dislocker only if the user supplies the key, and prefer USB/network transfer over mounting at all.
 - **OS:** Fedora 44 (verify with `rpm -E %fedora` before version-specific advice). Secure Boot ON — kernel modules must be signed; never suggest disabling Secure Boot without asking.
 - **Steam:** installed via RPM (`steam` package, not Flatpak) — Proton prefixes live under `~/.local/share/Steam/steamapps/compatdata/`.
 - **User background:** Debian/Ubuntu muscle memory. Commands are `dnf`, not `apt`.
@@ -32,27 +32,16 @@ When uncertain, read the live system before answering — never guess.
 
 | Component | Source | Notes |
 |---|---|---|
-| Hyprland (core) | COPR `ashbuk/Hyprland-Fedora` | Vendored libs. **`solopasha/hyprland` core is BROKEN on F44** (stale aquamarine vs system libdisplay-info) — never "fix" Hyprland by switching to it. |
-| hyprpaper, hyprpicker, hyprland-contrib | COPR `solopasha/hyprland` | Kept enabled for these satellites only (no aquamarine dependency). |
-| Ghostty (primary terminal) | COPR `scottames/ghostty` | Per ghostty.org's own docs. foot is the bootstrap/fallback terminal. |
+| GNOME extensions: dash-to-panel, appindicator | Fedora repos (dnf) | `gnome-shell-extension-dash-to-panel`, `gnome-shell-extension-appindicator`. |
+| GNOME extension: ArcMenu | extensions.gnome.org zip, user-level | Not packaged for Fedora. `gnome-extensions install <zip>` into `~/.local/share/gnome-shell/extensions/`. dnf won't update it; ArcMenu self-notifies on updates. |
+| Ghostty (primary terminal) | COPR `scottames/ghostty` | Per ghostty.org's own docs. |
 | yazi | COPR `boobaa/yazi` | Terminal file manager. |
 | Starship | Official install script → `/usr/local/bin` | **Not packaged.** `dnf` won't update it; updating means re-running the installer. |
 | NVIDIA driver | RPM Fusion `akmod-nvidia` (confirmed: 595.80) | Never the `.run` installer. After install/update, wait for the akmod build (`modinfo -F version nvidia` returns a version) **before rebooting.** |
 
-## Hyprland Version Trap
-
-Hyprland 0.55+ moved to a Lua config format. This repo still uses legacy
-hyprlang `.conf` syntax — working but deprecated. Consequences:
-
-- **Never paste config from older guides/examples unverified:** `windowrulev2`, `dwindle:pseudotile`, and `gestures:workspace_swipe` no longer work as of 0.55. See git log for their replacements.
-- On config errors, run `hyprctl configerrors` for exact file/line — don't guess from the on-screen banner.
-- The classic `fullscreenstate` windowrule is gone in 0.55's legacy syntax; the effect is now `fullscreen <internal> client:<state>` (e.g. `fullscreen 0 client:2` for fake-fullscreen-in-a-tile). It applies at window creation only — for already-open windows, focus them and run `hyprctl dispatch fullscreenstate 0 2`.
-- Layerrules use the same `match:` syntax as windowrules in 0.55: `layerrule = match:namespace ^(waybar)$, blur on, ignore_alpha 0.1` — note it's `ignore_alpha` (underscore), not the classic `ignorealpha`.
-- A future Lua migration is a known, deliberate project — do not do it opportunistically as a side effect of another task.
-
 ## Known Quirks & Decision Log
 
-- **Cropped/shifted screen edge:** fractional monitor scale. Logical resolution (physical ÷ scale) must be a whole number — see the comment on the `monitor =` line in `hyprland/.config/hypr/hyprland.conf`. Fix the scale value and re-login. **NEVER toggle `hyprctl keyword monitor eDP-1,disable` live** — on this machine the CRTC did not come back and a hard restart was required.
+- **Hyprland removed (2026-07-19):** the machine ran a Hyprland rice until then; the user retired it deliberately in favor of GNOME with a Windows-like layout (ArcMenu start menu, per-window Alt-Tab, edge snapping — all applied by `gnome-nord`). Old configs live in git history. The `ashbuk/Hyprland-Fedora` and `solopasha/hyprland` COPRs serve nothing anymore and should be removed if still present (`dnf copr remove`). Do not reintroduce Hyprland or its COPRs to "fix" anything.
 - **Battery shows "Not charging" while plugged in:** kernel-level, not a config bug. The stock `msi_wmi_platform` driver misreads this MSI EC (`/sys/class/power_supply/BAT1/status` is wrong system-wide). **Decision (2026-07-10):** the `msi-ec` DKMS driver (COPR `xabi08/MSI-EC`) was deliberately NOT installed — this exact model wasn't on its supported list, and it writes raw EC registers. Revisit only if the supported-devices list adds the Crosshair A18 HX A8WGKG. Do not "helpfully" install it.
 - Kernel update → black screen: first suspicion is an unfinished/failed akmod NVIDIA rebuild, not the config. Check before touching anything else.
 - **Snapshot guard false-positives on prose (2026-07-16):** `agent-snapshot-guard` regex-matches the *raw Bash command string*, so a `git commit -m` whose message merely mentions e.g. "a dnf install would…" is blocked as a system change. The guard is right to be blunt — reword the message; do NOT take a pointless snapshot to get past it, and do NOT loosen the patterns. Only genuine system changes deserve `snap-now`.
@@ -87,7 +76,7 @@ are recovered via git in this repo instead.
 
 ```
 journalctl -b -p err --no-pager | tail -50     # this boot's errors
-hyprctl configerrors && hyprctl monitors        # compositor state
+gnome-extensions list --enabled                 # shell extension state
 lspci -k | grep -A3 -Ei 'vga|3d'                # which driver owns each GPU
 nvidia-smi                                      # dGPU alive? (offload check: dgpu-run glxinfo)
 dnf history | head                              # what changed recently
@@ -96,6 +85,17 @@ cat /sys/class/power_supply/BAT1/status         # before trusting any battery re
 
 ## Environment Map
 
-Launcher: wofi · Bar: waybar · File manager: yazi (terminal) · Shell: zsh + starship
-Idle/lock/wallpaper: hypridle / hyprlock / hyprpaper · Wallpaper: generated gradient (Nord).
-GNOME fallback session (2026-07-15): kept traditional (no tiling — deliberate), themed Nord to match — `adw-gtk3-theme` + `gnome-shell-extension-dash-to-panel` (both Fedora repos, dnf-updated) give a slim Nord bottom taskbar and no top bar; app colors come from `gtk/.config/gtk-{3,4}.0/gtk.css` overrides; all dconf-side settings are applied by the idempotent `gnome-nord` script (`scripts/.local/bin/`) — re-run it if GNOME looks stock after an upgrade. Theme is **Nord** (since 2026-07-15): bg `#2e3440` / bg-alt `#3b4252` / fg `#eceff4` / muted `#4c566a` / primary accent frost cyan `#88c0d0` / secondary frost blue `#81a1c1` / semantic aurora red `#bf616a`, yellow `#ebcb8b`, green `#a3be8c` — new theming work should match this palette unless told otherwise.
+Desktop: GNOME (Wayland), sole session since 2026-07-19, Windows-like layout:
+dash-to-panel bottom taskbar + ArcMenu start menu (Windows layout; the Super
+key opens it instead of the Activities overview) + appindicator tray.
+Alt-Tab cycles windows (Super+Tab = per-app switcher); Super+arrows /
+drag-to-edge snap windows. Log in via the plain "GNOME" session at GDM —
+GNOME Classic force-loads window-list/apps-menu and fights this setup.
+Terminal: Ghostty · File manager: yazi (terminal) + Nautilus (GUI) · Shell:
+zsh + starship · Wallpaper: generated gradient (Nord).
+App colors come from `gtk/.config/gtk-{3,4}.0/gtk.css` overrides; ALL
+dconf-side settings (theme, taskbar, ArcMenu, keybindings) are applied by
+the idempotent `gnome-nord` script (`scripts/.local/bin/`) — re-run it if
+GNOME looks stock after an upgrade. dash-to-panel/appindicator come from
+Fedora repos (dnf-updated); ArcMenu is user-installed from
+extensions.gnome.org (see Package Provenance). Theme is **Nord** (since 2026-07-15): bg `#2e3440` / bg-alt `#3b4252` / fg `#eceff4` / muted `#4c566a` / primary accent frost cyan `#88c0d0` / secondary frost blue `#81a1c1` / semantic aurora red `#bf616a`, yellow `#ebcb8b`, green `#a3be8c` — new theming work should match this palette unless told otherwise.

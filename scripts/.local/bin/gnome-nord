@@ -23,10 +23,27 @@ gsettings set org.gnome.desktop.background picture-uri-dark "$WALLPAPER"
 gsettings set org.gnome.desktop.background picture-options 'zoom'
 gsettings set org.gnome.desktop.screensaver picture-uri "$WALLPAPER"
 
+echo "== windows-like behavior (built-in mutter/shell settings) =="
+# Alt-Tab cycles windows (Windows-style), Super+Tab keeps the per-app switcher
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Super>Tab']"
+gsettings set org.gnome.mutter edge-tiling true   # drag-to-edge / Super+arrow snapping
+
 echo "== extensions =="
 # Enabling only flips a dconf key; takes effect at next GNOME login.
 gnome-extensions enable dash-to-panel@jderose9.github.com 2>/dev/null \
   || echo "  dash-to-panel not installed yet (dnf install gnome-shell-extension-dash-to-panel)"
+gnome-extensions enable arcmenu@arcmenu.com 2>/dev/null \
+  || echo "  arcmenu not loaded by the running shell yet (fresh install needs a re-login;" \
+          "if truly missing: gnome-extensions install of the e.g.o zip)"
+gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com 2>/dev/null \
+  || echo "  appindicator not installed yet (dnf install gnome-shell-extension-appindicator)"
+# Redundant with dash-to-panel (window-list) / ArcMenu (apps-menu, places-menu):
+gnome-extensions disable window-list@gnome-shell-extensions.gcampax.github.com 2>/dev/null || true
+gnome-extensions disable apps-menu@gnome-shell-extensions.gcampax.github.com 2>/dev/null || true
+gnome-extensions disable places-menu@gnome-shell-extensions.gcampax.github.com 2>/dev/null || true
 
 echo "== dash-to-panel (sleek bottom bar, Nord) =="
 D2P=/org/gnome/shell/extensions/dash-to-panel
@@ -46,5 +63,24 @@ dconf write $D2P/show-apps-icon-side-padding 8
 dconf write $D2P/animate-appicon-hover true
 dconf write $D2P/isolate-workspaces false
 dconf write $D2P/hide-overview-on-startup true
+# Hide d2p's own show-apps button — ArcMenu is the start menu now.
+# Full element list required; only showAppsButton deviates from d2p defaults.
+dconf write $D2P/panel-element-positions '"{\"0\":[{\"element\":\"showAppsButton\",\"visible\":false,\"position\":\"stackedTL\"},{\"element\":\"activitiesButton\",\"visible\":false,\"position\":\"stackedTL\"},{\"element\":\"leftBox\",\"visible\":true,\"position\":\"stackedTL\"},{\"element\":\"taskbar\",\"visible\":true,\"position\":\"stackedTL\"},{\"element\":\"centerBox\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"rightBox\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"dateMenu\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"systemMenu\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"desktopButton\",\"visible\":true,\"position\":\"stackedBR\"}]}"'
+
+echo "== arcmenu (Windows-style start menu, Nord) =="
+AM=/org/gnome/shell/extensions/arcmenu
+dconf write $AM/menu-layout "'windows'"
+# Super key opens the start menu instead of the Activities overview
+dconf write $AM/arcmenu-hotkey "['Super_L']"
+dconf write $AM/arcmenu-hotkey-overlay-key-enabled true
+dconf write $AM/override-menu-theme true
+dconf write $AM/menu-background-color "'#2e3440'"
+dconf write $AM/menu-foreground-color "'#eceff4'"
+dconf write $AM/menu-border-color "'#4c566a'"
+dconf write $AM/menu-separator-color "'#4c566a'"
+dconf write $AM/menu-item-hover-bg-color "'#3b4252'"
+dconf write $AM/menu-item-hover-fg-color "'#eceff4'"
+dconf write $AM/menu-item-active-bg-color "'#88c0d0'"
+dconf write $AM/menu-item-active-fg-color "'#2e3440'"
 
 echo "done — log into GNOME (or Alt+F2 r under Xorg) to see it."
