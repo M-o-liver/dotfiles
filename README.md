@@ -2,7 +2,8 @@
 
 GNOME desktop config (Nord theme, Windows-like layout) for Fedora 44,
 managed with GNU Stow. Each top-level directory is a stow "package"
-mirroring `~/.config` (or `~/.local`) layout.
+mirroring `~/.config` (or `~/.local`) layout — except `system/`, which
+holds root-owned config deployed by copy (see `system/README.md`).
 
 Hyprland history: this repo was a Hyprland rice until 2026-07-19, when the
 rice was retired in favor of plain GNOME with a Windows-like layout (see

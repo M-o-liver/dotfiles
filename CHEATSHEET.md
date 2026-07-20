@@ -98,17 +98,24 @@ On a captive portal you'll associate but have no route out until you open
 any `http://` page and sign in.
 
 ## Recovery
-- **GNOME session won't start / crashes at login**: at GDM, switch to a
-  TTY with `Ctrl+Alt+F3`, log in, check
+The login screen is SDDM (Nord-themed); GDM is installed but disabled as
+the fallback display manager.
+
+- **Login screen black/broken (SDDM greeter fails)**: switch to a TTY
+  with `Ctrl+Alt+F3`, log in, run
+  `sudo systemctl disable sddm && sudo systemctl enable gdm`, reboot.
+  You're back on stock GDM; debug SDDM later from comfort.
+- **GNOME session won't start / crashes at login**: from a TTY, check
   `journalctl --user -b -u org.gnome.Shell@wayland.service` (or
   `journalctl -b -p err`). `Ctrl+Alt+F1` (or F2) back to the graphical
   screen.
 - **Session hung**: `loginctl terminate-user cross` from a TTY force-kills
-  it and drops back to the GDM login screen.
+  it and drops back to the login screen.
 - **Theme/taskbar/start menu missing or stock-looking**: re-run
   `gnome-nord`, then log out/in. If ArcMenu is gone entirely (e.g. after a
   GNOME major upgrade breaks compatibility), reinstall the matching
   version from extensions.gnome.org (`gnome-extensions install <zip>`).
-- **Desperate fallback**: pick "GNOME Classic" at the GDM session picker
-  (gear icon) -- ugly but always works. Normal logins should use plain
-  "GNOME"; Classic force-loads its own extensions and fights this setup.
+- **Desperate fallback session**: pick "GNOME Classic" at the login
+  screen's session picker -- ugly but always works. Normal logins should
+  use plain "GNOME"; Classic force-loads its own extensions and fights
+  this setup.

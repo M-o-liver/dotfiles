@@ -34,6 +34,8 @@ When uncertain, read the live system before answering — never guess.
 |---|---|---|
 | GNOME extensions: dash-to-panel, appindicator | Fedora repos (dnf) | `gnome-shell-extension-dash-to-panel`, `gnome-shell-extension-appindicator`. |
 | GNOME extension: ArcMenu | extensions.gnome.org zip, user-level | Not packaged for Fedora. `gnome-extensions install <zip>` into `~/.local/share/gnome-shell/extensions/`. dnf won't update it; ArcMenu self-notifies on updates. |
+| SDDM (display manager) + sddm-x11 | Fedora repos (dnf) | Active DM since 2026-07-19; GDM stays installed+disabled as fallback. |
+| SDDM theme: sddm-astronaut-theme | GitHub (Keyitdev), vetted copy in `/usr/share/sddm/themes/` | Not packaged; dnf won't update it. Our Nord preset is tracked in `~/dotfiles/system/` (deploy-by-copy, see its README). |
 | Ghostty (primary terminal) | COPR `scottames/ghostty` | Per ghostty.org's own docs. |
 | yazi | COPR `boobaa/yazi` | Terminal file manager. |
 | Starship | Official install script → `/usr/local/bin` | **Not packaged.** `dnf` won't update it; updating means re-running the installer. |
@@ -89,8 +91,13 @@ Desktop: GNOME (Wayland), sole session since 2026-07-19, Windows-like layout:
 dash-to-panel bottom taskbar + ArcMenu start menu (Windows layout; the Super
 key opens it instead of the Activities overview) + appindicator tray.
 Alt-Tab cycles windows (Super+Tab = per-app switcher); Super+arrows /
-drag-to-edge snap windows. Log in via the plain "GNOME" session at GDM —
+drag-to-edge snap windows. Log in via the plain "GNOME" session —
 GNOME Classic force-loads window-list/apps-menu and fights this setup.
+Login screen: SDDM with sddm-astronaut-theme (Nord preset, since
+2026-07-19); GDM is installed but disabled — rollback is
+`systemctl disable sddm && systemctl enable gdm` from a TTY. GDM itself
+stays unthemed and untouched (2026-07-17 lockout); theming happens in
+SDDM, where it's supported.
 Terminal: Ghostty · File manager: yazi (terminal) + Nautilus (GUI) · Shell:
 zsh + starship · Wallpaper: generated gradient (Nord).
 App colors come from `gtk/.config/gtk-{3,4}.0/gtk.css` overrides; ALL
