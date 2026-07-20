@@ -5,7 +5,7 @@ After=graphical-session.target
 [Service]
 Type=oneshot
 ExecStartPre=/usr/bin/sleep 3
-ExecStart=%h/.local/bin/openrgb-crosshair --device 0 --mode "color cycle" --speed 0 --color FF0000,FF7F00,FFFF00,00FF00,0000FF,4B0082,9400D3
+ExecStart=%h/.local/bin/openrgb-crosshair --device 0 --mode wave --speed 0 --color FF0000,FF7F00,FFFF00,00FF00,0000FF,4B0082,9400D3
 
 [Install]
 WantedBy=default.target
