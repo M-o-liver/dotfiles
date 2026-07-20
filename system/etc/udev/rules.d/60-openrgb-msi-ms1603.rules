@@ -1,0 +1,6 @@
+# MSI MysticLight MS-1603 (1462:1603) — the Crosshair 18 HX internal keyboard.
+# Fedora's openrgb-udev-rules (1.0rc2) does not cover this PID, so without
+# this rule the hidraw node stays root-only and openrgb-crosshair detects no
+# devices ("Error: Empty device ID"). Same style as the packaged
+# /usr/lib/udev/rules.d/60-openrgb.rules.
+SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1462", ATTRS{idProduct}=="1603", TAG+="uaccess", TAG+="MSI_Mystic_Light_MS1603"

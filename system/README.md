@@ -14,6 +14,10 @@ reconcile, then recommit).
 
 ## Contents
 
+- `etc/udev/rules.d/60-openrgb-msi-ms1603.rules` — uaccess for the MSI
+  MysticLight MS-1603 keyboard (1462:1603) so OpenRGB can drive the
+  keyboard backlight as the logged-in user. Fedora's packaged
+  openrgb-udev-rules doesn't know this PID.
 - `etc/sddm.conf.d/10-theme.conf` — selects the SDDM theme.
 - `usr/share/sddm/themes/sddm-astronaut-theme/Themes/nord.conf` — our Nord
   preset for the sddm-astronaut-theme greeter (upstream:
