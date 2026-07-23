@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Link subscribed Songs of Syx Steam Workshop mods into the game's Proton
+# mods directory.
+#
+# The Windows build runs under Proton and does not enumerate Workshop items
+# through the Steam API, so subscribed mods never appear in the launcher's
+# MODS tab. Symlinking each item into the prefix's mods/ folder makes the
+# launcher see them, and because they are links (not copies) a Workshop
+# update lands in the game with no further action.
+#
+# Idempotent: safe to run on every game launch. Wired into Steam via
+# launch options -- see CHEATSHEET.md.
+
+set -uo pipefail
+
+APPID=1162750
+STEAM="${HOME}/.local/share/Steam"
+WORKSHOP="${STEAM}/steamapps/workshop/content/${APPID}"
+MODS="${STEAM}/steamapps/compatdata/${APPID}/pfx/drive_c/users/steamuser/AppData/Roaming/songsofsyx/mods"
+
+if [[ ! -d "$MODS" ]]; then
+    echo "syx-mods-sync: mods dir not found, has the game run once? ($MODS)" >&2
+    exit 0
+fi
+
+if [[ ! -d "$WORKSHOP" ]]; then
+    echo "syx-mods-sync: no Workshop content for $APPID, nothing to do" >&2
+    exit 0
+fi
+
+linked=0 kept=0 pruned=0
+
+# Drop links whose Workshop item is gone (unsubscribed). Only ever remove
+# symlinks pointing into the Workshop tree -- hand-installed mods are real
+# directories and must be left alone.
+for entry in "$MODS"/*; do
+    [[ -L "$entry" ]] || continue
+    target=$(readlink "$entry")
+    [[ "$target" == "$WORKSHOP"/* ]] || continue
+    if [[ ! -d "$target" ]]; then
+        rm -f "$entry"
+        echo "pruned:  $(basename "$entry") (unsubscribed)"
+        pruned=$((pruned + 1))
+    fi
+done
+
+for item in "$WORKSHOP"/*/; do
+    item="${item%/}"
+    [[ -d "$item" ]] || continue
+
+    # Already linked under some name? Leave that name alone -- it is what
+    # the launcher recorded in LauncherSettings.txt MODS.
+    existing=""
+    for entry in "$MODS"/*; do
+        [[ -L "$entry" ]] || continue
+        [[ "$(readlink "$entry")" == "$item" ]] || continue
+        existing="$entry"
+        break
+    done
+    if [[ -n "$existing" ]]; then
+        echo "ok:      $(basename "$existing")"
+        kept=$((kept + 1))
+        continue
+    fi
+
+    # Name the folder from the mod's own _Info.txt, falling back to the
+    # Workshop id. Strip characters that would break the quoted, comma
+    # separated MODS list the launcher writes.
+    name=""
+    if [[ -f "$item/_Info.txt" ]]; then
+        name=$(sed -n 's/^[[:space:]]*NAME:[[:space:]]*"\(.*\)",[[:space:]]*$/\1/p' \
+               "$item/_Info.txt" | head -1)
+    fi
+    name="${name//[\"\,\/\\]/}"
+    name="${name#"${name%%[![:space:]]*}"}"
+    name="${name%"${name##*[![:space:]]}"}"
+    [[ -n "$name" ]] || name="workshop-$(basename "$item")"
+
+    if [[ -e "$MODS/$name" ]]; then
+        echo "skip:    $name (a real directory of that name already exists)" >&2
+        continue
+    fi
+
+    ln -s "$item" "$MODS/$name"
+    echo "linked:  $name"
+    linked=$((linked + 1))
+done
+
+echo "syx-mods-sync: ${linked} linked, ${kept} already present, ${pruned} pruned"
+echo "Enable new mods in the launcher's MODS tab before starting a world."

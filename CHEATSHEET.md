@@ -91,6 +91,23 @@ dgpu-run <command>
 dgpu-run flatpak run org.prismlauncher.PrismLauncher
 ```
 
+## Songs of Syx mods
+The game runs its Windows build under Proton and does not see Steam
+Workshop subscriptions on its own, so the launcher's MODS tab shows up
+empty. `syx-mods-sync` symlinks every subscribed mod into the Proton
+prefix so the launcher lists them:
+```
+syx-mods-sync     # safe to re-run; prints what it linked
+```
+It runs automatically on game launch via Steam launch options
+(`syx-mods-sync; %command%`), so a new subscription is there next time you
+start. After subscribing you still have to tick the mod in the launcher's
+MODS tab, and mods must be enabled *before* starting a world.
+
+Mods are linked, not copied, so Workshop updates apply with no action.
+Unsubscribing leaves a dead link that the next run cleans up. Hand-placed
+mod folders are real directories and are never touched.
+
 ## WiFi
 GNOME's system menu (top-right of the taskbar) lists and connects to
 networks. The `wifi` script still works from any terminal:
