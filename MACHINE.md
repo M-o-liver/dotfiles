@@ -14,7 +14,7 @@ When uncertain, read the live system before answering — never guess.
 - **eDP panel:** BOE NE180QDM-NZ4, 2560x1600@240Hz, scale 1.60.
 - **RAM:** 30GiB total.
 - **Storage:** `nvme0n1` — Samsung 990 EVO 1TB, LUKS2-encrypted Btrfs, holds `/boot/efi`, `/boot`, and the `fedora` btrfs volume (`/`, `/home`), snapper `root` config active. `nvme1n1` — Samsung MZVL81T0HELB 953.9GB, dedicated to the Windows 11 install (EFI `SYSTEM` partition, BitLocker-encrypted OS partition, WinRE, BIOS_RVY) — Windows lives on its own physical disk, not a shared-disk partition.
-- **Dual boot:** Windows 11 on `nvme1n1`, BitLocker-encrypted. GNOME/GDM is the one and only desktop session (Hyprland removed 2026-07-19) — **do not remove GNOME or GDM.** Never mount the Windows partition read-write; never touch Windows EFI entries; read-only via dislocker only if the user supplies the key, and prefer USB/network transfer over mounting at all.
+- **Dual boot:** Windows 11 on `nvme1n1`, BitLocker-encrypted. GNOME/GDM is the one and only desktop session (Hyprland removed 2026-07-19; GDM is the active DM again as of 2026-07-22) — **do not remove GNOME or GDM.** Never mount the Windows partition read-write; never touch Windows EFI entries; read-only via dislocker only if the user supplies the key, and prefer USB/network transfer over mounting at all.
 - **OS:** Fedora 44 (verify with `rpm -E %fedora` before version-specific advice). Secure Boot ON — kernel modules must be signed; never suggest disabling Secure Boot without asking.
 - **Steam:** installed via RPM (`steam` package, not Flatpak) — Proton prefixes live under `~/.local/share/Steam/steamapps/compatdata/`.
 - **User background:** Debian/Ubuntu muscle memory. Commands are `dnf`, not `apt`.
@@ -34,8 +34,8 @@ When uncertain, read the live system before answering — never guess.
 |---|---|---|
 | GNOME extensions: dash-to-panel, appindicator | Fedora repos (dnf) | `gnome-shell-extension-dash-to-panel`, `gnome-shell-extension-appindicator`. |
 | GNOME extension: ArcMenu | extensions.gnome.org zip, user-level | Not packaged for Fedora. `gnome-extensions install <zip>` into `~/.local/share/gnome-shell/extensions/`. dnf won't update it; ArcMenu self-notifies on updates. |
-| SDDM (display manager) + sddm-x11 | Fedora repos (dnf) | Active DM since 2026-07-19; GDM stays installed+disabled as fallback. |
-| SDDM theme: sddm-astronaut-theme | GitHub (Keyitdev), vetted copy in `/usr/share/sddm/themes/` | Not packaged; dnf won't update it. Our Nord preset is tracked in `~/dotfiles/system/` (deploy-by-copy, see its README). |
+| SDDM (display manager) + sddm-x11 | Fedora repos (dnf) | **Installed but INACTIVE since 2026-07-22** — GDM is the active DM again (see decision log). |
+| SDDM theme: sddm-astronaut-theme | GitHub (Keyitdev), vetted copy in `/usr/share/sddm/themes/` | Not packaged; dnf won't update it. Our Nord preset is tracked in `~/dotfiles/system/` (deploy-by-copy, see its README). Inactive while GDM is the DM. |
 | Keyboard RGB: OpenRGB | Fedora repos (`openrgb`, 1.0rc2) + local build | The packaged rc2 doesn't support the MS-1603 laptop keyboard; a local 1.0rc3 build (`~/.local/bin/openrgb-crosshair`, built 2026-07-11, ~12MB, **not in git** like the fonts) does. Driven by user unit `openrgb-crosshair.service` (stow pkg `systemd/`); needs the udev rule in `system/etc/udev/rules.d/` (see quirks). |
 | Ghostty (primary terminal) | COPR `scottames/ghostty` | Per ghostty.org's own docs. |
 | yazi | COPR `boobaa/yazi` | Terminal file manager. |
@@ -45,6 +45,8 @@ When uncertain, read the live system before answering — never guess.
 ## Known Quirks & Decision Log
 
 - **Hyprland removed (2026-07-19):** the machine ran a Hyprland rice until then; the user retired it deliberately in favor of GNOME with a Windows-like layout (ArcMenu start menu, per-window Alt-Tab, edge snapping — all applied by `gnome-nord`). Old configs live in git history. The `ashbuk/Hyprland-Fedora` and `solopasha/hyprland` COPRs serve nothing anymore and should be removed if still present (`dnf copr remove`). Do not reintroduce Hyprland or its COPRs to "fix" anything.
+- **Desktop reverted to stock GNOME (2026-07-23):** the user asked to go back to plain Fedora 44 GNOME. All GNOME dconf customization was reset to schema defaults (`gsettings reset`), dash-to-panel / ArcMenu / appindicator disabled (Fedora's `background-logo` left enabled — it IS stock), the extension config trees under `/org/gnome/shell/extensions/` cleared, and the `gtk` stow package unstowed so the Nord `gtk.css`/`settings.ini` overrides stop forcing dark+Papirus+JetBrainsMono on GTK apps. **Nothing was uninstalled and nothing was deleted from this repo** — this was a deliberate settings-only revert, so `stow gtk && gnome-nord` puts the whole rice back. Do not "tidy up" by removing `gnome-nord`, `gtk/`, or `wallpaper/`; they are the kept escape hatch. Current stock values: gtk-theme `Adwaita`, icon-theme `Adwaita`, color-scheme `default`, accent `blue`, font `Adwaita Sans 11`.
+- **Login screen back on GDM (2026-07-22):** `/etc/systemd/system/display-manager.service` was repointed to `gdm.service`; SDDM and the astronaut/Nord theme remain installed but inactive. This happened outside an agent session and MACHINE.md was not updated at the time — it still claimed SDDM was active until 2026-07-23. Lesson: trust `readlink -f /etc/systemd/system/display-manager.service` over this file. GDM itself stays unthemed (2026-07-17 lockout still stands).
 - **Battery shows "Not charging" while plugged in:** kernel-level, not a config bug. The stock `msi_wmi_platform` driver misreads this MSI EC (`/sys/class/power_supply/BAT1/status` is wrong system-wide). **Decision (2026-07-10):** the `msi-ec` DKMS driver (COPR `xabi08/MSI-EC`) was deliberately NOT installed — this exact model wasn't on its supported list, and it writes raw EC registers. Revisit only if the supported-devices list adds the Crosshair A18 HX A8WGKG. Do not "helpfully" install it.
 - **Keyboard RGB dead / `openrgb-crosshair.service` fails with "Error: Empty device ID" (fixed 2026-07-19):** means OpenRGB can't open the keyboard's hidraw node (root-only, so zero devices detected) — a permissions problem, not a device problem. The fix is the uaccess udev rule for `1462:1603` in `system/etc/udev/rules.d/60-openrgb-msi-ms1603.rules`, deployed by copy to `/etc/udev/rules.d/`. It had worked on setup day (2026-07-11) only because permissions were granted by hand, then failed on every boot after. If it regresses, check `ls -l /dev/hidraw*` (the MS-1603 node should carry a user ACL) before touching anything else.
 - Kernel update → black screen: first suspicion is an unfinished/failed akmod NVIDIA rebuild, not the config. Check before touching anything else.
@@ -89,22 +91,23 @@ cat /sys/class/power_supply/BAT1/status         # before trusting any battery re
 
 ## Environment Map
 
-Desktop: GNOME (Wayland), sole session since 2026-07-19, Windows-like layout:
-dash-to-panel bottom taskbar + ArcMenu start menu (Windows layout; the Super
-key opens it instead of the Activities overview) + appindicator tray.
-Alt-Tab cycles windows (Super+Tab = per-app switcher); Super+arrows /
-drag-to-edge snap windows. Log in via the plain "GNOME" session —
-GNOME Classic force-loads window-list/apps-menu and fights this setup.
-Login screen: SDDM with sddm-astronaut-theme (Nord preset, since
-2026-07-19); GDM is installed but disabled — rollback is
-`systemctl disable sddm && systemctl enable gdm` from a TTY. GDM itself
-stays unthemed and untouched (2026-07-17 lockout); theming happens in
-SDDM, where it's supported.
+Desktop: GNOME (Wayland), sole session since 2026-07-19, **stock Fedora 44
+defaults since 2026-07-23** — no theming, top bar + Activities overview,
+Super opens the overview, Alt-Tab is the grouped app switcher, Adwaita
+everywhere. The only enabled extension is Fedora's own `background-logo`.
+Log in via the plain "GNOME" session.
+Login screen: GDM, stock and unthemed (active again since 2026-07-22).
+SDDM + sddm-astronaut-theme are installed but inactive; GDM stays
+untouched (2026-07-17 lockout).
 Terminal: Ghostty · File manager: yazi (terminal) + Nautilus (GUI) · Shell:
-zsh + starship · Wallpaper: generated gradient (Nord).
-App colors come from `gtk/.config/gtk-{3,4}.0/gtk.css` overrides; ALL
-dconf-side settings (theme, taskbar, ArcMenu, keybindings) are applied by
-the idempotent `gnome-nord` script (`scripts/.local/bin/`) — re-run it if
-GNOME looks stock after an upgrade. dash-to-panel/appindicator come from
-Fedora repos (dnf-updated); ArcMenu is user-installed from
-extensions.gnome.org (see Package Provenance). Theme is **Nord** (since 2026-07-15): bg `#2e3440` / bg-alt `#3b4252` / fg `#eceff4` / muted `#4c566a` / primary accent frost cyan `#88c0d0` / secondary frost blue `#81a1c1` / semantic aurora red `#bf616a`, yellow `#ebcb8b`, green `#a3be8c` — new theming work should match this palette unless told otherwise.
+zsh + starship. These were explicitly kept out of the 2026-07-23 revert —
+"default GNOME" meant the desktop, not the terminal tooling.
+The Nord rice is dormant, not deleted: `gtk/.config/gtk-{3,4}.0/gtk.css`
+(unstowed) holds the app color overrides, and the idempotent `gnome-nord`
+script (`scripts/.local/bin/`) is still the committed source of truth for
+every dconf-side setting it used to apply. `stow gtk && gnome-nord`
+restores it in full. Its palette is **Nord**: bg `#2e3440` / bg-alt
+`#3b4252` / fg `#eceff4` / muted `#4c566a` / primary accent frost cyan
+`#88c0d0` / secondary frost blue `#81a1c1` / semantic aurora red
+`#bf616a`, yellow `#ebcb8b`, green `#a3be8c` — if theming work is ever
+requested again, match this palette unless told otherwise.

@@ -1,31 +1,34 @@
 # GNOME desktop cheat-sheet
 
-Windows-like GNOME setup: dash-to-panel taskbar (bottom), ArcMenu start
-menu, per-window Alt-Tab, edge snapping. All of it is applied by the
-`gnome-nord` script -- re-run it and re-login if anything looks stock.
+Stock Fedora 44 GNOME -- no theming, no extensions beyond Fedora's own
+`background-logo`. Reverted to defaults 2026-07-23. The old Windows-like
+rice (dash-to-panel, ArcMenu, Nord colors) is still in this repo behind
+the `gnome-nord` script if it's ever wanted back; see Recovery.
 
-## Start menu & apps
+## Overview & apps
 | Key | Action |
 |---|---|
-| `Super` | Open start menu (ArcMenu, Windows layout) |
+| `Super` | Activities overview (windows + workspaces + search) |
 | Type after `Super` | Search apps/files, Enter to launch |
-| `Alt + F2` | Run-command prompt (GNOME built-in) |
-| Taskbar icon click | Focus/launch app (pin via right-click) |
+| `Super + A` | Application grid |
+| `Alt + F2` | Run-command prompt |
+| Top-left hot corner | Overview (mouse) |
 
-There are no custom app-launch hotkeys anymore (the old `Super+Q` etc.
-went with Hyprland). Add any you miss in Settings > Keyboard > Custom
+Favorites live in the dash on the left of the overview -- right-click an
+app to pin. Add custom launch hotkeys in Settings > Keyboard > Custom
 Shortcuts.
 
 ## Windows
 | Key | Action |
 |---|---|
-| `Alt + Tab` | Switch between windows (Windows-style, per window) |
-| `Super + Tab` | Switch between applications (grouped) |
+| `Alt + Tab` | Switch between applications (grouped) |
+| ``Alt + ` `` | Switch between windows of the current app |
 | `Super + Left/Right` | Snap window to half screen (or drag to edge) |
 | `Super + Up` | Maximize (or drag to top edge) |
 | `Super + Down` | Unmaximize / restore |
 | `Super + H` | Minimize ("hide") |
 | `Alt + F4` | Close window |
+| `Alt + F7` / `Alt + F8` | Move / resize with the keyboard |
 | `F11` | Fullscreen (app-dependent) |
 
 ## Workspaces
@@ -33,12 +36,14 @@ Shortcuts.
 |---|---|
 | `Super + Page Up / Page Down` | Previous / next workspace |
 | `Super + Shift + Page Up / Page Down` | Move window to prev/next workspace |
+| `Ctrl + Alt + Left / Right` | Previous / next workspace (alternate) |
 | 3-finger touchpad swipe up | Overview (all windows + workspaces) |
+| 4-finger touchpad swipe left/right | Switch workspace |
 
 ## Media / system
 Volume, brightness, and media keys are handled natively by GNOME.
 System menu (network, bluetooth, battery, power off): top-right of the
-taskbar. Lock screen: `Super + L`.
+top bar. Lock screen: `Super + Shift + L`.
 
 ## Terminal apps
 | Command | Action |
@@ -98,24 +103,21 @@ On a captive portal you'll associate but have no route out until you open
 any `http://` page and sign in.
 
 ## Recovery
-The login screen is SDDM (Nord-themed); GDM is installed but disabled as
-the fallback display manager.
+The login screen is GDM, stock and unthemed (Fedora's default). SDDM and
+its Nord theme are still installed but inactive.
 
-- **Login screen black/broken (SDDM greeter fails)**: switch to a TTY
-  with `Ctrl+Alt+F3`, log in, run
-  `sudo systemctl disable sddm && sudo systemctl enable gdm`, reboot.
-  You're back on stock GDM; debug SDDM later from comfort.
 - **GNOME session won't start / crashes at login**: from a TTY, check
   `journalctl --user -b -u org.gnome.Shell@wayland.service` (or
   `journalctl -b -p err`). `Ctrl+Alt+F1` (or F2) back to the graphical
   screen.
 - **Session hung**: `loginctl terminate-user cross` from a TTY force-kills
   it and drops back to the login screen.
-- **Theme/taskbar/start menu missing or stock-looking**: re-run
-  `gnome-nord`, then log out/in. If ArcMenu is gone entirely (e.g. after a
-  GNOME major upgrade breaks compatibility), reinstall the matching
-  version from extensions.gnome.org (`gnome-extensions install <zip>`).
+- **Want the old Windows-like rice back**: `stow gtk && gnome-nord`, then
+  log out/in. That re-enables dash-to-panel, ArcMenu and appindicator,
+  restores the Nord colors and the per-window Alt-Tab, and re-applies the
+  generated wallpaper. If ArcMenu is gone entirely (e.g. after a GNOME
+  major upgrade breaks compatibility), reinstall the matching version
+  from extensions.gnome.org (`gnome-extensions install <zip>`).
 - **Desperate fallback session**: pick "GNOME Classic" at the login
   screen's session picker -- ugly but always works. Normal logins should
-  use plain "GNOME"; Classic force-loads its own extensions and fights
-  this setup.
+  use plain "GNOME".
