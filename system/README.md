@@ -19,6 +19,10 @@ reconcile, then recommit).
   keyboard backlight as the logged-in user. Fedora's packaged
   openrgb-udev-rules doesn't know this PID.
 - `etc/sddm.conf.d/10-theme.conf` — selects the SDDM theme.
+- `etc/sysctl.d/99-zram-tuning.conf` — VM tuning that belongs with the
+  zram device: `vm.page-cluster = 0` (swap readahead is pointless when
+  swap is RAM) and `vm.swappiness = 100` (reclaiming anon pages is cheap
+  when it means compressing rather than writing to NVMe).
 - `etc/systemd/zram-generator.conf` — zram swap. Keeps Fedora's stock 8G
   size but switches the compressor from `lzo-rle` to `zstd`. Replaces (does
   not merge with) the vendor file in `/usr/lib/systemd/`, so `zram-size`
