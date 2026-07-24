@@ -19,6 +19,11 @@ reconcile, then recommit).
   keyboard backlight as the logged-in user. Fedora's packaged
   openrgb-udev-rules doesn't know this PID.
 - `etc/sddm.conf.d/10-theme.conf` — selects the SDDM theme.
+- `etc/systemd/zram-generator.conf` — zram swap. Keeps Fedora's stock 8G
+  size but switches the compressor from `lzo-rle` to `zstd`. Replaces (does
+  not merge with) the vendor file in `/usr/lib/systemd/`, so `zram-size`
+  is restated there deliberately — dropping it would fall back to
+  `min(ram / 2, 4096)`.
 - `usr/share/sddm/themes/sddm-astronaut-theme/Themes/nord.conf` — our Nord
   preset for the sddm-astronaut-theme greeter (upstream:
   https://github.com/Keyitdev/sddm-astronaut-theme, GPLv3, Qt6). The theme
