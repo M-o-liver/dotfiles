@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# term-theme -- apply a Catppuccin Mocha profile to GNOME Terminal.
+# Idempotent; safe to re-run. GNOME Terminal keeps its profile in dconf
+# (schemaless, UUID-keyed), so this script is the committed source of truth
+# for the terminal's colors -- the same role gnome-nord plays for the desktop.
+# Deliberately standalone (not part of gnome-nord): the desktop is stock
+# GNOME now, and running gnome-nord would re-apply the whole retired rice.
+# Run once after `sudo dnf install gnome-terminal`.
+set -euo pipefail
+
+# Fixed UUID so repeat runs update this profile in place instead of piling up.
+ID="c1a7cafe-0000-4000-8000-cafe15600d10"
+ROOT="/org/gnome/terminal/legacy/profiles:"
+P="${ROOT}/:${ID}/"
+
+# Register the profile and make it the sole default.
+dconf write "${ROOT}/list"    "['${ID}']"
+dconf write "${ROOT}/default" "'${ID}'"
+
+echo "== colors: Catppuccin Mocha =="
+dconf write "${P}visible-name"            "'Catppuccin Mocha'"
+dconf write "${P}use-theme-colors"        "false"
+dconf write "${P}use-theme-transparency"  "false"
+dconf write "${P}bold-is-bright"          "true"
+dconf write "${P}background-color"        "'#1E1E2E'"
+dconf write "${P}foreground-color"        "'#CDD6F4'"
+dconf write "${P}cursor-colors-set"       "true"
+dconf write "${P}cursor-background-color" "'#F5E0DC'"
+dconf write "${P}cursor-foreground-color" "'#1E1E2E'"
+dconf write "${P}palette" "['#45475A', '#F38BA8', '#A6E3A1', '#F9E2AF', '#89B4FA', '#F5C2E7', '#94E2D5', '#BAC2DE', '#585B70', '#F38BA8', '#A6E3A1', '#F9E2AF', '#89B4FA', '#F5C2E7', '#94E2D5', '#A6ADC8']"
+
+echo "== font / misc =="
+dconf write "${P}use-system-font" "false"
+dconf write "${P}font"            "'JetBrainsMono Nerd Font 12'"
+dconf write "${P}audible-bell"    "false"
+
+echo "done -- open a new GNOME Terminal window to see Catppuccin Mocha."

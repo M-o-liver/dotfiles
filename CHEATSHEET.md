@@ -68,6 +68,89 @@ over SSH. Every hook is guarded, so the same `.zshrc` is safe on a minimal box.
 | `zellij` | terminal multiplexer (tmux alternative) |
 | `direnv allow` | Trust an `.envrc` so its env loads on `cd` |
 
+## Installed toolbox
+Everything added this session, in brief. Run any of these from a terminal.
+
+### CLI / shell
+| Tool | What it does |
+|---|---|
+| `fzf` | Fuzzy finder; powers Ctrl-R / Ctrl-T / Alt-C above |
+| `fd` | Fast, friendly `find` replacement |
+| `zoxide` | `z` -- jump to directories by frecency |
+| `eza` | Modern `ls` (git status, icons, tree) |
+| `bat` | `cat` with syntax highlighting + paging |
+| `git-delta` | Pretty side-by-side git diffs (wired into git) |
+| `lazygit` (`lg`) | Full-screen git TUI |
+| `zellij` | Terminal multiplexer (panes/tabs; tmux alternative) |
+| `procs` | Modern `ps` |
+| `hyperfine` | Command benchmarking tool |
+| `ncdu` | Interactive disk-usage browser |
+| `tealdeer` (`tldr`) | Fast, example-first man pages |
+| `yq` | Like `jq`, but for YAML |
+| `glow` | Render Markdown in the terminal |
+| `chafa` | Show images as terminal graphics |
+
+### Dev
+| Tool | What it does |
+|---|---|
+| `nvim` | Neovim editor |
+| `just` | Command runner (a saner `make` for tasks) |
+| `direnv` | Auto-load per-project env from `.envrc` |
+| `distrobox` | Run other distros' tools in containers |
+| `shellcheck` | Lints shell scripts for bugs |
+| `http` | HTTPie -- human-friendly curl |
+
+### Files / transfer / backup
+| Tool | What it does |
+|---|---|
+| `croc` | Send files between machines via a code phrase |
+| `rclone` | Sync to/from cloud storage (rsync for clouds) |
+| `restic` | Fast encrypted snapshot backups |
+| `aria2c` | Multi-connection downloader |
+| `syncthing` | Continuous peer-to-peer folder sync |
+| `trash-put` | Send files to the trash instead of `rm` |
+
+### Network / security
+| Tool | What it does |
+|---|---|
+| `nmap` | Network/port scanner |
+| `wireshark` | Packet capture + analysis (GUI) |
+| `gping` | Ping with a live graph |
+| `age` | Simple modern file encryption |
+| `testdisk` / `photorec` | Recover lost partitions / deleted files |
+| `lynis` | Local security-hardening audit |
+
+### System / hardware
+| Tool | What it does |
+|---|---|
+| `nvtop` | GPU usage monitor (watch the RTX 5070) |
+| `powertop` | Power draw analysis + tunables |
+| `s-tui` | Stress test + live CPU temp/freq TUI |
+
+### Gaming
+| Tool | What it does |
+|---|---|
+| `mangohud` | In-game FPS/perf overlay (`mangohud <game>`) |
+| `goverlay` | GUI to configure MangoHud |
+| `gamescope` | Micro-compositor for games (scaling, framecap) |
+| Lutris | Launcher for non-Steam / Windows games |
+| Heroic | Epic / GOG / Amazon games launcher (Flatpak) |
+| ProtonUp-Qt | Manage Proton-GE versions (Flatpak) |
+
+### Terminal toys
+| Tool | What it does |
+|---|---|
+| `cmatrix` | Matrix rain |
+| `cava` | Audio spectrum visualizer |
+| `asciiquarium` | ASCII aquarium |
+| `cowsay` / `lolcat` / `figlet` | ASCII cow / rainbow pipe / big text |
+
+### GUI apps (Flatpak)
+OBS Studio (recording/streaming), Krita (painting), GIMP (photo editing),
+Inkscape (vector), Blender (3D), Audacity (audio), HandBrake (video
+transcode), Obsidian (notes), Bitwarden (passwords), Flameshot
+(screenshot annotate), LocalSend (AirDrop-style transfer).
+
 ## yazi keybinds
 | Key | Action |
 |---|---|
