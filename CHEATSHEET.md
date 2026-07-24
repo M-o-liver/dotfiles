@@ -51,6 +51,23 @@ top bar. Lock screen: `Super + Shift + L`.
 | `y` | yazi (in any terminal) -- `cd`s to wherever you exited |
 | `yazi` | yazi without the cd-on-exit behavior |
 
+## Shell power-ups (zsh)
+All emulator-agnostic -- these work in Ghostty, Ptyxis, gnome-terminal, and
+over SSH. Every hook is guarded, so the same `.zshrc` is safe on a minimal box.
+| Key / Command | Action |
+|---|---|
+| `Ctrl-R` | Fuzzy search command history (fzf) |
+| `Ctrl-T` | Fuzzy-pick a file/path into the current command (fzf) |
+| `Alt-C` | Fuzzy `cd` into a subdirectory (fzf) |
+| `z <part>` | Jump to a frecent directory by fragment (zoxide) |
+| `zi` | Interactive zoxide directory picker |
+| Right arrow / `Ctrl-E` | Accept the greyed-out autosuggestion |
+| `ll` / `la` | eza long / long-all listing (git status + icons) |
+| `lt` | eza tree, 2 levels deep |
+| `lg` | lazygit (git TUI) |
+| `zellij` | terminal multiplexer (tmux alternative) |
+| `direnv allow` | Trust an `.envrc` so its env loads on `cd` |
+
 ## yazi keybinds
 | Key | Action |
 |---|---|
