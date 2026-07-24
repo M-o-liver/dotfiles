@@ -52,8 +52,9 @@ top bar. Lock screen: `Super + Shift + L`.
 | `yazi` | yazi without the cd-on-exit behavior |
 
 ## Shell power-ups (zsh)
-All emulator-agnostic -- these work in Ghostty, Ptyxis, gnome-terminal, and
-over SSH. Every hook is guarded, so the same `.zshrc` is safe on a minimal box.
+All emulator-agnostic -- these work in gnome-terminal, over SSH, and any
+other terminal. Every hook is guarded, so the same `.zshrc` is safe on a
+minimal box.
 | Key / Command | Action |
 |---|---|
 | `Ctrl-R` | Fuzzy search command history (fzf) |
